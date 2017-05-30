@@ -8,11 +8,16 @@ abstract class TestCase extends BaseTestCase
 {
     use CreatesApplication, DisableExceptionHandling, DatabaseSetup;
 
-    protected function setUp()
+    public function setUp()
     {
         parent::setUp();
 
         $this->setupDatabase();
         $this->disableExceptionHandling();
+    }
+
+    public function postFrom($uri, $data = [])
+    {
+        return $this->call('POST', $uri, $data, [], [], ['HTTP_REFERER' => $uri]);
     }
 }

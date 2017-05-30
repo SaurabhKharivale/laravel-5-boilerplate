@@ -1,0 +1,10 @@
+linters:
+  Indentation:
+    enabled: true
+    allow_non_nested_indentation: false
+    character: space
+    width: 4
+  NestingDepth:
+    enabled: true
+    max_depth: 4
+    ignore_parent_selectors: false
