@@ -13,12 +13,9 @@ scripts:
     - vendor/bin/phpunit
 
 before_install:
-    - cp .env.example .env
+    - cp .env.travis .env
     - mysql -e 'CREATE DATABASE IF NOT EXISTS boilerplate_testing;'
     - mysql -e 'CREATE DATABASE IF NOT EXISTS boilerplate_dusk;'
 
 addons:
     mariadb: '10.1'
-
-env:
-    - DB_USERNAME=travis DB_PASSWORD=
