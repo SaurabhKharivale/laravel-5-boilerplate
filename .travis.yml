@@ -10,3 +10,10 @@ before_script:
 
 scripts:
     - vendor/bin/phpunit
+
+before_install:
+    - mysql -e 'CREATE DATABASE IF NOT EXISTS boilerplate_testing'
+    - mysql -e 'CREATE DATABASE IF NOT EXISTS boilerplate_dusk'
+
+addons:
+    mariadb: '10.1'
