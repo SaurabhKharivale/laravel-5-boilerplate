@@ -14,12 +14,11 @@ scripts:
 before_install:
     - mysql -e 'CREATE DATABASE IF NOT EXISTS boilerplate_testing;'
     - mysql -e 'CREATE DATABASE IF NOT EXISTS boilerplate_dusk;'
-    - mysql -e "GRANT ALL PRIVILEGES ON boilerplate_testing.* to forge@'localhost' IDENTIFIED BY 'secret';"
-    - mysql -e "GRANT ALL PRIVILEGES ON boilerplate_dusk.* to forge@'localhost' IDENTIFIED BY 'secret';"
+    - mysql -u root -e "GRANT ALL PRIVILEGES ON boilerplate_testing.* to travis@'localhost' IDENTIFIED BY 'secret';"
+    - mysql -u root -e "GRANT ALL PRIVILEGES ON boilerplate_dusk.* to travis@'localhost' IDENTIFIED BY 'secret';"
 
 addons:
     mariadb: '10.1'
 
 env:
-    - DB_USERNAME=forge
-    - DB_PASSWORD=secret
+    - DB_USERNAME=travis DB_PASSWORD=secret
