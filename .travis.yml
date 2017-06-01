@@ -23,16 +23,17 @@ script:
   - php artisan dusk
 
 before_install:
-  - mysql -e 'CREATE DATABASE IF NOT EXISTS boilerplate_dusk;'
   - mysql -e 'CREATE DATABASE IF NOT EXISTS boilerplate_testing;'
-  - mysql -u root -e "GRANT ALL PRIVILEGES ON boilerplate_dusk.* to travis@'%';"
   - mysql -u root -e "GRANT ALL PRIVILEGES ON boilerplate_testing.* to travis@'%';"
 
 addons:
   mariadb: '10.1'
   artifacts:
     s3_region: 'us-east-1'
-    debug: true
     paths:
       - $(ls ./tests/Browser/screenshots/*.png | tr "\n" ":")
       - $(ls ./storage/logs/*.log | tr "\n" ":")
+
+cache:
+  directories:
+    - vendor
