@@ -31,7 +31,8 @@ before_install:
 addons:
   mariadb: '10.1'
   artifacts:
-    s3_region: 'ap-south-1'
+    s3_region: 'us-east-1'
+    debug: true
     paths:
       - $(ls ./tests/Browser/screenshots/*.png | tr "\n" ":")
       - $(ls ./storage/logs/*.log | tr "\n" ":")
