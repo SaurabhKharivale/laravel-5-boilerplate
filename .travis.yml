@@ -11,8 +11,8 @@ php:
 before_script:
   - composer self-update
   - composer install --prefer-source --no-interaction
-  - cp .env.travis .env
-  - cp .env.dusk.travis .env.dusk.testing
+  - cp .env.ci .env
+  - cp .env.dusk.ci .env.dusk.testing
   - export DISPLAY=:99.0
   - sh -e /etc/init.d/xvfb start
   - ./vendor/laravel/dusk/bin/chromedriver-linux &
@@ -24,7 +24,7 @@ script:
 
 before_install:
   - mysql -e 'CREATE DATABASE IF NOT EXISTS boilerplate_testing;'
-  - mysql -u root -e "GRANT ALL PRIVILEGES ON boilerplate_testing.* to travis@'%';"
+  - mysql -u root -e "GRANT ALL PRIVILEGES ON boilerplate_testing.* to ci_user@'%' IDENTIFIED BY '';"
 
 addons:
   mariadb: '10.1'
