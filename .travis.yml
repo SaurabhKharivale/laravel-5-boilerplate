@@ -24,7 +24,8 @@ script:
 
 before_install:
   - mysql -e 'CREATE DATABASE IF NOT EXISTS boilerplate_testing;'
-  - mysql -u root -e "GRANT ALL PRIVILEGES ON boilerplate_testing.* to ci_user@'%' IDENTIFIED BY '';"
+  - mysql -u root -e "CREATE USER ci_user IDENTIFIED BY '';"
+  - mysql -u root -e "GRANT ALL PRIVILEGES ON boilerplate_testing.* to ci_user@'%';"
 
 addons:
   mariadb: '10.1'
