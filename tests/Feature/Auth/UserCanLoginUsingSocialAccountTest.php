@@ -114,6 +114,31 @@ class UserCanLoginUsingSocialAccountTest extends TestCase
         $this->fail('User should not exist if social account linking failed');
     }
 
+    /** @test */
+    public function user_can_login_even_when_social_provider_deos_not_provide_an_email()
+    {
+        $this->setupSocilaliteExpectationsForUser([
+            'name' => 'Test user',
+            'email' => null,
+            'provider' => 'google',
+            'provider_id' => '123456',
+        ]);
+        $this->assertCount(0, User::all());
+
+        $response = $this->get('/auth/google/callback');
+
+        $this->assertCount(1, User::all());
+        $user = User::first();
+        $this->assertEquals('Test user', $user->first_name);
+        $this->assertNull($user->last_name);
+        $this->assertNull($user->email);
+        $this->assertSocialAccountIsLinkedToUser($user, [
+            'provider_id' => '123456',
+            'provider' => 'google'
+        ]);
+        $response->assertRedirect('home');
+    }
+
     public function setupSocilaliteExpectationsForUser($data)
     {
         $abstractUser = Mockery::mock('Laravel\Socialite\Two\User');
