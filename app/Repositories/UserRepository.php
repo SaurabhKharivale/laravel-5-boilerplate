@@ -37,7 +37,9 @@ class UserRepository
                 $user =  $this->createUser($social_account);
 
                 return $this->linkSocialAccount($user, $social_account);
-            } catch (SocialAccountNotLinkedException | \Exception $e) {
+            } catch (SocialAccountNotLinkedException $e) {
+                throw new AccountCreationFailedException('Account creation failed');
+            } catch (\Exception $e) {
                 throw new AccountCreationFailedException('Account creation failed');
             }
         });
