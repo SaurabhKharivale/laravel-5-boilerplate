@@ -55,7 +55,7 @@ class UserCanChangeHisPasswordTest extends DuskTestCase
     }
 
     /** @test */
-    public function errors_are_show_for_invalid_form_data()
+    public function errors_are_shown_when_password_is_less_than_6_characters()
     {
         $this->browse(function (Browser $browser) {
             $browser->visit('/password/reset/token')
@@ -66,7 +66,6 @@ class UserCanChangeHisPasswordTest extends DuskTestCase
                     ->waitForText('password must be at least 6 characters', 1);
         });
     }
-
 
     /** @test */
     public function error_is_shown_when_password_confirmation_does_not_match()
