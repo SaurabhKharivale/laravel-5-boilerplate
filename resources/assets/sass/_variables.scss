@@ -1,7 +1,11 @@
+$off-white: #f3eff3;
 $light-gray: #e3e3e3;
 $red: #ff3860;
 
+$form-title-bg: $off-white;
 $form-border: $light-gray;
 
 $input-border-regular: $light-gray;
 $input-border-danger: $red;
+
+$info-text-light: darken($light-gray, 20);

@@ -6,6 +6,7 @@ use App\User;
 use Tests\DuskTestCase;
 use Laravel\Dusk\Browser;
 use Tests\Traits\UserAssertions;
+use Tests\Browser\Pages\ProfilePage;
 use Tests\Feature\Auth\PasswordResetTrait;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
 
@@ -23,11 +24,11 @@ class LoggedInUserPasswordUpdateTest extends DuskTestCase
 
         $this->browse(function (Browser $browser) use ($user) {
             $browser->loginAs($user->id)
-                    ->visit('/profile')
+                    ->visit(new ProfilePage)
                     ->type('current_password', 'secret')
                     ->type('new_password', '123456')
                     ->type('new_password_confirmation', '123456')
-                    ->press('Change password')
+                    ->press('@change')
                     ->assertPathIs('/profile')
                     ->waitForText('Your password has been updated');
         });
@@ -45,11 +46,11 @@ class LoggedInUserPasswordUpdateTest extends DuskTestCase
 
         $this->browse(function (Browser $browser) use ($user) {
             $browser->loginAs($user->id)
-                    ->visit('/profile')
+                    ->visit(new ProfilePage)
                     ->type('current_password', 'incorrect_current_password')
                     ->type('new_password', '123456')
                     ->type('new_password_confirmation', '123456')
-                    ->press('Change password')
+                    ->press('@change')
                     ->assertPathIs('/profile')
                     ->waitForText('current password did not match');
         });
@@ -67,11 +68,11 @@ class LoggedInUserPasswordUpdateTest extends DuskTestCase
 
         $this->browse(function (Browser $browser) use ($user) {
             $browser->loginAs($user->id)
-                    ->visit('/profile')
+                    ->visit(new ProfilePage)
                     ->type('current_password', 'secret')
                     ->type('new_password', '123456')
                     ->type('new_password_confirmation', 'abcdefg')
-                    ->press('Change password')
+                    ->press('@change')
                     ->assertPathIs('/profile')
                     ->waitForText('password confirmation does not match');
         });
@@ -89,11 +90,11 @@ class LoggedInUserPasswordUpdateTest extends DuskTestCase
 
         $this->browse(function (Browser $browser) use ($user) {
             $browser->loginAs($user->id)
-                    ->visit('/profile')
+                    ->visit(new ProfilePage)
                     ->type('current_password', 'secret')
                     ->type('new_password', '123')
                     ->type('new_password_confirmation', '123')
-                    ->press('Change password')
+                    ->press('@change')
                     ->assertPathIs('/profile')
                     ->waitForText('new password must be at least 6 characters');
         });
@@ -111,11 +112,11 @@ class LoggedInUserPasswordUpdateTest extends DuskTestCase
 
         $this->browse(function (Browser $browser) use ($user) {
             $browser->loginAs($user->id)
-                    ->visit('/profile')
+                    ->visit(new ProfilePage)
                     ->type('current_password', 'secret')
                     ->type('new_password', 'secret')
                     ->type('new_password_confirmation', 'secret')
-                    ->press('Change password')
+                    ->press('@change')
                     ->assertPathIs('/profile')
                     ->waitForText('new password and current password must be different');
         });

@@ -1,0 +1,11 @@
+.app-content {
+    &.is-padded {
+        padding: 8rem 0;
+    }
+
+    &.is-centered {
+        align-items: center;
+        display: flex;
+        flex-direction: column;
+    }
+}
