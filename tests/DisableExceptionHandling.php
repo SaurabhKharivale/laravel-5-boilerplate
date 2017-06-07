@@ -6,8 +6,8 @@ use Illuminate\Contracts\Debug\ExceptionHandler;
 use App\Exceptions\Handler;
 use Exception;
 
-trait DisableExceptionHandling {
-
+trait DisableExceptionHandling
+{
     public function disableExceptionHandling()
     {
         $this->oldExceptionHandler = $this->app->make(ExceptionHandler::class);

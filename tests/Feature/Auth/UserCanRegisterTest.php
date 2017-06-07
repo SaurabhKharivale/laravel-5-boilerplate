@@ -4,11 +4,14 @@ namespace Tests\Feature\Auth;
 
 use App\User;
 use Tests\TestCase;
+use Tests\Traits\UserAssertions;
 use Illuminate\Database\QueryException;
 use Illuminate\Validation\ValidationException;
 
 class UserCanRegisterTest extends TestCase
 {
+    use UserAssertions;
+
     /** @test */
     public function user_can_register_with_valid_info()
     {
@@ -28,7 +31,7 @@ class UserCanRegisterTest extends TestCase
         $this->assertEquals('John', $user->first_name);
         $this->assertEquals('Doe', $user->last_name);
         $this->assertEquals('johndoe@gmail.com', $user->email);
-        $this->assertTrue(\Hash::check('123456', $user->password));
+        $this->assertPasswordMatches('123456', $user->password);
     }
 
     /** @test */

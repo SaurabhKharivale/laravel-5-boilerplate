@@ -18,6 +18,8 @@ Route::get('/', function () {
 Auth::routes();
 
 Route::get('/home', 'HomeController@index')->name('home');
+Route::get('/profile', 'Auth\ProfileController@show')->name('profile');
 
 Route::get('/auth/{provider}', 'Auth\SocialLoginController@redirectToProvider');
 Route::get('/auth/{provider}/callback', 'Auth\SocialLoginController@handleProviderCallback');
+Route::post('/password/change', 'Auth\ChangePasswordController@change')->name('password.change');

@@ -32,4 +32,9 @@ trait UserAssertions
     {
         $this->assertCount(0, $user->fresh()->socialAccounts, 'User must not have any linked social account.');
     }
+
+    public function assertPasswordMatches($plain, $hashed)
+    {
+        $this->assertTrue(\Hash::check($plain, $hashed), "User password did not match: $plain" );
+    }
 }

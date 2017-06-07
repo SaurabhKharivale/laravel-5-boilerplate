@@ -21,8 +21,9 @@
 
     <div id="flash-notification">
         <notifier
-            message="{{ Session::get('flash_notification.message') }}"
-            type="{{ Session::get('flash_notification.type') }}">
+            message="{{ session('notification.message') }}"
+            persist="{{ session('notification.persist') }}"
+            type="{{ session('notification.type') }}">
         </notifier>
     </div>
 

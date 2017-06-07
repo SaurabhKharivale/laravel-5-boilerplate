@@ -3,6 +3,7 @@
 namespace App\Exceptions;
 
 use Exception;
+use App\Exceptions\PasswordMismatchException;
 use Illuminate\Auth\AuthenticationException;
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
 
@@ -44,6 +45,12 @@ class Handler extends ExceptionHandler
      */
     public function render($request, Exception $exception)
     {
+        if($exception instanceOf PasswordMismatchException) {
+            return redirect()->back()->withErrors([
+                'current_password' => $exception->getMessage()
+            ]);
+        }
+
         return parent::render($request, $exception);
     }
 

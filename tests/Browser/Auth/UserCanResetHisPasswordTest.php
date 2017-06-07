@@ -8,12 +8,12 @@ use Laravel\Dusk\Browser;
 use Tests\Feature\Auth\PasswordResetTrait;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
 
-class UserCanChangeHisPasswordTest extends DuskTestCase
+class UserCanResetHisPasswordTest extends DuskTestCase
 {
     use DatabaseMigrations, PasswordResetTrait;
 
     /** @test */
-    public function user_can_change_password_with_valid_reset_token()
+    public function user_can_reset_password_with_valid_reset_token()
     {
         $user = factory(User::class)->create([
             'email' => 'john@doe.com',
@@ -34,7 +34,7 @@ class UserCanChangeHisPasswordTest extends DuskTestCase
     }
 
     /** @test */
-    public function user_cannot_change_password_using_invalid_password_reset_token()
+    public function user_cannot_reset_password_using_invalid_password_reset_token()
     {
         $user = factory(User::class)->create([
             'email' => 'john@doe.com',
