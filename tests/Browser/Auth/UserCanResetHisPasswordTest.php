@@ -63,7 +63,7 @@ class UserCanResetHisPasswordTest extends DuskTestCase
                     ->type('password', '123')
                     ->type('password_confirmation', '123')
                     ->press('Reset')
-                    ->waitForText('password must be at least 6 characters', 1);
+                    ->waitForText('password must be at least 6 characters');
         });
     }
 
@@ -76,7 +76,7 @@ class UserCanResetHisPasswordTest extends DuskTestCase
                     ->type('password', '123456')
                     ->type('password_confirmation', 'abcdef')
                     ->press('Reset')
-                    ->waitForText('password confirmation does not match', 1);
+                    ->waitForText('password confirmation does not match');
         });
     }
 }

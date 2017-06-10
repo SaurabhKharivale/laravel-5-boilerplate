@@ -44,7 +44,7 @@ class UserLoginTest extends DuskTestCase
                     ->type('email', 'johndoe@gmail.com')
                     ->type('password', 'wrong-password')
                     ->press('@login')
-                    ->waitForText('credentials do not match', 1);
+                    ->waitForText('credentials do not match');
         });
     }
 
@@ -56,7 +56,7 @@ class UserLoginTest extends DuskTestCase
                     ->type('email', 'ghost@user.com')
                     ->type('password', 'xyz')
                     ->press('@login')
-                    ->waitForText('credentials do not match', 1);
+                    ->waitForText('credentials do not match');
         });
     }
 }

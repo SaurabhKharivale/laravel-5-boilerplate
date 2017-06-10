@@ -44,10 +44,10 @@ class UserRegistrationTest extends DuskTestCase
                     ->type('password', '123')
                     ->type('password_confirmation', '123')
                     ->press('@register')
-                    ->waitForText('first name must be at least 3 characters', 1)
-                    ->waitForText('last name must be at least 3 characters', 1)
-                    ->waitForText('email must be a valid', 1)
-                    ->waitForText('password must be at least 6 characters', 1);
+                    ->waitForText('first name must be at least 3 characters')
+                    ->waitForText('last name must be at least 3 characters')
+                    ->waitForText('email must be a valid')
+                    ->waitForText('password must be at least 6 characters');
         });
     }
 
