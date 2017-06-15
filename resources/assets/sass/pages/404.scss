@@ -1,0 +1,14 @@
+.page-404 {
+    .subtitle,
+    .error-code {
+        color: $info-text-light;
+    }
+
+    .back-to-home {
+        color: $info-text-light;
+
+        &:hover {
+            color: darken($info-text-light, 40);
+        }
+    }
+}
