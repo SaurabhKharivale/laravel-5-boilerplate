@@ -19,6 +19,7 @@ class SocialLoginTest extends DuskTestCase
         $this->browse(function (Browser $browser) {
             $browser->visit('/login')
                     ->clickLink('Sign in with Google')
+                    ->pause(1000)
                     ->on(new GoogleLoginPage);
         });
     }
@@ -29,6 +30,7 @@ class SocialLoginTest extends DuskTestCase
         $this->browse(function (Browser $browser) {
             $browser->visit('/login')
                     ->clickLink('Sign in with Twitter')
+                    ->pause(1000)
                     ->on(new TwitterLoginPage);
         });
     }
