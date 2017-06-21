@@ -15,6 +15,8 @@
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
 </head>
 <body>
+    @include('layouts.partials.verify-email-reminder')
+
     @include('layouts.partials.nav')
 
     @yield('content')

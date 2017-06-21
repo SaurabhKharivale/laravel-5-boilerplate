@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Auth;
 
 use App\User;
 use Illuminate\Http\Request;
+use App\Events\UserRegistered;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Foundation\Auth\RegistersUsers;
@@ -74,6 +75,8 @@ class RegisterController extends Controller
 
     protected function registered(Request $request, $user)
     {
+        event(new UserRegistered($user));
+
         if($request->wantsJson()) {
             return response()->json([
                 'success' => true,

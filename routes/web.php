@@ -23,3 +23,6 @@ Route::get('/profile', 'Auth\ProfileController@show')->name('profile');
 Route::get('/auth/{provider}', 'Auth\SocialLoginController@redirectToProvider');
 Route::get('/auth/{provider}/callback', 'Auth\SocialLoginController@handleProviderCallback');
 Route::post('/password/change', 'Auth\ChangePasswordController@change')->name('password.change');
+
+Route::get('/activate/{token}', 'Frontend\ActivationController@activate')->name('activation');
+Route::get('/resend-activation-link', 'Frontend\ActivationController@resend');

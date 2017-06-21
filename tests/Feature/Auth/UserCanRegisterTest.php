@@ -4,13 +4,26 @@ namespace Tests\Feature\Auth;
 
 use App\User;
 use Tests\TestCase;
+use App\Events\UserRegistered;
 use Tests\Traits\UserAssertions;
+use Illuminate\Support\Facades\Event;
 use Illuminate\Database\QueryException;
 use Illuminate\Validation\ValidationException;
 
 class UserCanRegisterTest extends TestCase
 {
     use UserAssertions;
+
+    public function setUp()
+    {
+        parent::setUp();
+
+        // User sucessful registration triggers an event which sends mail and results in slow test.
+        // Below tests are not concerned about whether an email is sent or not.
+        // That concern is handled in anonther tests class.
+        // Hence, to speedup the tests, need to stop the events from firing.
+        $this->withoutEvents();
+    }
 
     /** @test */
     public function user_can_register_with_valid_info()
@@ -230,6 +243,22 @@ class UserCanRegisterTest extends TestCase
         }
 
         $this->fail('Incorrect password confirmation should not pass validation.');
+    }
+
+    /** @test */
+    public function user_registered_event_is_fired_on_successful_registration()
+    {
+        Event::fake();
+        $this->assertCount(0, User::all());
+        $data = $this->generateUserDetails(['email' => 'john@doe.com']);
+
+        $this->post('register', $data);
+
+        $this->assertCount(1, User::all());
+        $user = User::first();
+        Event::assertDispatched(UserRegistered::class, function ($event) use ($user) {
+            return $event->user->is($user);
+        });
     }
 
     public function validUserDetails()

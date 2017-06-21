@@ -33,4 +33,14 @@ class UserTest extends TestCase
         $this->assertTrue($found_social_accounts->contains($account_two));
         $this->assertTrue($found_social_accounts->contains($account_three));
     }
+
+    /** @test */
+    public function users_verified_field_is_converted_to_boolean()
+    {
+        $user = factory(User::class)->create(['verified' => 0]);
+        $this->assertFalse($user->verified);
+
+        $user = factory(User::class)->create(['verified' => 1]);
+        $this->assertTrue($user->verified);
+    }
 }

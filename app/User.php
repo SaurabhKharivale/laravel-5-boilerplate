@@ -31,4 +31,9 @@ class User extends Authenticatable
     {
         return $this->hasMany(SocialAccount::class);
     }
+    
+    public function getVerifiedAttribute($value)
+    {
+        return !! $value;
+    }
 }

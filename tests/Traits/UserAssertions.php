@@ -20,7 +20,7 @@ trait UserAssertions
         return $users->first();
     }
 
-    public function assertSocialAccountIsLinkedToUser($user, $details)
+    public function assertSocialAccountIsLinkedToUser(User $user, $details)
     {
         $social_account = $user->socialAccounts->first();
         $this->assertNotNull($social_account, 'No social account is linked with the user.');
@@ -36,5 +36,32 @@ trait UserAssertions
     public function assertPasswordMatches($plain, $hashed)
     {
         $this->assertTrue(\Hash::check($plain, $hashed), "User password did not match: $plain" );
+    }
+
+    public function assertEmailIsNotVerified(User $user)
+    {
+        $this->assertFalse($user->fresh()->verified, 'User should not have a verified email.');
+    }
+
+    public function assertEmailIsVerified(User $user)
+    {
+        $this->assertTrue($user->fresh()->verified, 'User should have a verified email.');
+    }
+
+    public function assertUserDoesNotHaveActivationToken(User $user)
+    {
+        $result = $this->findUserActivationToken($user);
+        $this->assertCount(0, $result, 'User should not have any linked activation token.');
+    }
+
+    public function assertUserHasActivationToken(User $user)
+    {
+        $result = $this->findUserActivationToken($user);
+        $this->assertCount(1, $result, 'Cannot find activation token for the user.');
+    }
+
+    private function findUserActivationToken(User $user)
+    {
+        return \DB::table('user_activations')->where('user_id', $user->id)->get();
     }
 }
