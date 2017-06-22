@@ -7,12 +7,9 @@ use Tests\DuskTestCase;
 use Laravel\Dusk\Browser;
 use Tests\Browser\Pages\GoogleLoginPage;
 use Tests\Browser\Pages\TwitterLoginPage;
-use Illuminate\Foundation\Testing\DatabaseMigrations;
 
 class SocialLoginTest extends DuskTestCase
 {
-    use DatabaseMigrations;
-
     /** @test */
     public function user_is_redirected_to_google_login_page_when_trying_to_login_using_google_account()
     {

@@ -6,11 +6,10 @@ use App\User;
 use Tests\DuskTestCase;
 use Laravel\Dusk\Browser;
 use Tests\Feature\Auth\PasswordResetTrait;
-use Illuminate\Foundation\Testing\DatabaseMigrations;
 
 class UserCanResetHisPasswordTest extends DuskTestCase
 {
-    use DatabaseMigrations, PasswordResetTrait;
+    use PasswordResetTrait;
 
     /** @test */
     public function user_can_reset_password_with_valid_reset_token()

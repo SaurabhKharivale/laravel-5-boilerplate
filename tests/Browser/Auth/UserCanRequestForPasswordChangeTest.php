@@ -7,11 +7,10 @@ use Tests\DuskTestCase;
 use Laravel\Dusk\Browser;
 use Tests\Feature\Auth\PasswordResetTrait;
 use Tests\Browser\Pages\PasswordResetEmailPage;
-use Illuminate\Foundation\Testing\DatabaseMigrations;
 
 class UserCanRequestForPasswordChangeTest extends DuskTestCase
 {
-    use DatabaseMigrations, PasswordResetTrait;
+    use PasswordResetTrait;
 
     /** @test */
     public function user_is_notified_about_password_link_sent_to_their_email()

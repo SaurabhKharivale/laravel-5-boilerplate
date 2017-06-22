@@ -6,12 +6,9 @@ use App\User;
 use Tests\DuskTestCase;
 use Laravel\Dusk\Browser;
 use Tests\Browser\Pages\LoginPage;
-use Illuminate\Foundation\Testing\DatabaseMigrations;
 
 class UserLoginTest extends DuskTestCase
 {
-    use DatabaseMigrations;
-
     /** @test */
     public function user_can_login_using_valid_credentials()
     {

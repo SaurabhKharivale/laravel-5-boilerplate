@@ -8,11 +8,10 @@ use Laravel\Dusk\Browser;
 use Tests\Traits\UserAssertions;
 use Tests\Browser\Pages\ProfilePage;
 use Tests\Feature\Auth\PasswordResetTrait;
-use Illuminate\Foundation\Testing\DatabaseMigrations;
 
 class LoggedInUserPasswordUpdateTest extends DuskTestCase
 {
-    use DatabaseMigrations, UserAssertions;
+    use UserAssertions;
 
     /** @test */
     public function user_can_update_password_with_valid_details()

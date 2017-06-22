@@ -6,12 +6,9 @@ use App\User;
 use Tests\DuskTestCase;
 use Laravel\Dusk\Browser;
 use Tests\Browser\Pages\RegisterPage;
-use Illuminate\Foundation\Testing\DatabaseMigrations;
 
 class UserRegistrationTest extends DuskTestCase
 {
-    use DatabaseMigrations;
-
     /** @test */
     public function user_can_register_with_valid_details()
     {
