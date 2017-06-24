@@ -15,7 +15,7 @@ class UserCanLogoutTest extends TestCase
         $this->assertTrue(auth()->check());
         $this->assertTrue(auth()->user()->is($user));
 
-        $response = $this->call('POST', '/logout', [], [], [], ['HTTP_REFERER' => '/home']);
+        $response = $this->post('/logout');
 
         $response->assertRedirect('/');
         $this->assertFalse(auth()->check());

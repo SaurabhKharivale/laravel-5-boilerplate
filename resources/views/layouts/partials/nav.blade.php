@@ -17,14 +17,10 @@
             <a class="nav-item is-tab is-hidden-tablet is-active">Home</a>
             <a class="nav-item is-tab is-hidden-tablet">Features</a>
             <a class="nav-item is-tab is-hidden-tablet">About</a>
-            @if (Auth::guest())
-                <a class="nav-item is-tab" href="{{ route('login') }}">Login</a>
-                <a class="nav-item is-tab" href="{{ route('register') }}">Register</a>
-            @else
+            @if(Auth::check())
                 <a href="{{ route('profile') }}" class="nav-item is-tab">
                     {{ Auth::user()->first_name }} <span class="caret"></span>
                 </a>
-
 
                 <a class="nav-item is-tab" href="{{ route('logout') }}"
                     onclick="event.preventDefault();
@@ -35,6 +31,23 @@
                 <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
                     {{ csrf_field() }}
                 </form>
+            @elseif(Auth::guard('admin')->check())
+                <a href="#" class="nav-item is-tab">
+                    {{ Auth::guard('admin')->user()->first_name }} <span class="caret"></span>
+                </a>
+
+                <a class="nav-item is-tab" href="{{ route('admin.logout') }}"
+                    onclick="event.preventDefault();
+                    document.getElementById('logout-form').submit();">
+                    Logout
+                </a>
+
+                <form id="logout-form" action="{{ route('admin.logout') }}" method="POST" style="display: none;">
+                    {{ csrf_field() }}
+                </form>
+            @else
+                <a class="nav-item is-tab" href="{{ route('login') }}">Login</a>
+                <a class="nav-item is-tab" href="{{ route('register') }}">Register</a>
             @endif
         </div>
     </div>
