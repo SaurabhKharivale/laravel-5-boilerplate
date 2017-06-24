@@ -26,3 +26,7 @@ Route::post('/password/change', 'Auth\ChangePasswordController@change')->name('p
 
 Route::get('/activate/{token}', 'Frontend\ActivationController@activate')->name('activation');
 Route::get('/resend-activation-link', 'Frontend\ActivationController@resend');
+
+Route::get('/admin/login', 'Auth\AdminLoginController@showLoginForm')->name('admin.login');
+Route::post('/admin/login', 'Auth\AdminLoginController@login');
+Route::get('/admin/dashboard', 'Auth\AdminLoginController@dashboard')->name('admin.dashboard');

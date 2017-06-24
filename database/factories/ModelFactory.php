@@ -1,6 +1,7 @@
 <?php
 
 use App\User;
+use App\Admin;
 use App\SocialAccount;
 
 /*
@@ -34,5 +35,17 @@ $factory->define(SocialAccount::class, function (Faker\Generator $faker) {
         'user_id' => function() { return factory(User::class)->create()->id; },
         'provider' => $faker->randomElement(['google', 'facebook', 'twitter']),
         'provider_id' => $faker->uuid,
+    ];
+});
+
+$factory->define(Admin::class, function (Faker\Generator $faker) {
+    static $password;
+
+    return [
+        'first_name' => $faker->firstName,
+        'last_name' => $faker->lastName,
+        'email' => $faker->unique()->safeEmail,
+        'password' => $password ?: $password = bcrypt('secret'),
+        'remember_token' => str_random(10),
     ];
 });
