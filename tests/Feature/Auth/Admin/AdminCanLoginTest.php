@@ -79,6 +79,21 @@ class AdminCanLoginTest extends TestCase
     }
 
     /** @test */
+    public function logged_in_admin_trying_to_access_admin_login_page_is_redirected_back_to_admin_dashboard()
+    {
+        $admin = factory(Admin::class)->create([
+            'email' => 'admin@example.com',
+            'password' => bcrypt('secret'),
+        ]);
+        auth()->guard('admin')->login($admin);
+        $this->assertLoggedInAsAdmin($admin);
+
+        $response = $this->get('/admin/login');
+
+        $response->assertRedirect('/admin/dashboard');
+    }
+
+    /** @test */
     public function guest_user_can_visit_admin_login_page()
     {
         $response = $this->get('/admin/login');

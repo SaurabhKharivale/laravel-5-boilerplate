@@ -12,6 +12,11 @@ class AdminLoginController extends Controller
 
     protected $redirectTo = '/admin/dashboard';
 
+    public function __construct()
+    {
+        $this->middleware('guest:admin', ['except' => ['logout']]);
+    }
+
     public function showLoginForm()
     {
         return view('admin.login');
@@ -20,10 +25,5 @@ class AdminLoginController extends Controller
     protected function guard()
     {
         return Auth::guard('admin');
-    }
-
-    public function dashboard()
-    {
-        return view('admin.dashboard');
     }
 }

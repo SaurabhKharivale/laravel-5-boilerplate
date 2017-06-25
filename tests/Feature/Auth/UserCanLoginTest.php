@@ -60,4 +60,19 @@ class UserCanLoginTest extends TestCase
         $response->assertRedirect('/login');
         $this->assertNull(\Auth::user());
     }
+
+    /** @test */
+    public function logged_in_user_cannot_access_admin_dashboard()
+    {
+        $this->withExceptionHandling();
+        $user = factory(User::class)->create([
+            'email' => 'johndoe@gmail.com',
+            'password' => bcrypt('secret')
+        ]);
+        $this->be($user);
+
+        $response = $this->get('/admin/dashboard');
+
+        $response->assertRedirect('/admin/login');
+    }
 }

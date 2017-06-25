@@ -8,7 +8,7 @@ use Tests\TestCase;
 class AdminCanLogoutTest extends TestCase
 {
     /** @test */
-    public function logged_in_user_can_logout()
+    public function logged_in_admin_user_can_logout()
     {
         $admin = factory(Admin::class)->create(['email' => 'admin@example.com']);
         auth()->guard('admin')->login($admin);
