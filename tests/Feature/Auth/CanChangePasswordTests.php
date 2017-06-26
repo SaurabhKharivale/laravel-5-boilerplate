@@ -2,61 +2,76 @@
 
 namespace Tests\Feature\Auth;
 
-use App\User;
-use Tests\TestCase;
-use Illuminate\Support\Facades\Notification;
-use Illuminate\Auth\Notifications\ResetPassword;
+use Tests\Feature\Auth\PasswordResetTrait;
 
-class UserCanChangePasswordTest extends TestCase
+trait CanChangePasswordTests
 {
     use PasswordResetTrait;
+
+    abstract protected function createUserOrAdmin();
+
+    abstract protected function getPasswordResetURL();
+
+    abstract protected function getSuccessfulRedirectURL();
+
+    abstract protected function verifyLoggedIn();
+
+    /** @test */
+    public function can_access_password_reset_form()
+    {
+        $response = $this->get($this->getPasswordResetURL() . '/SOME_TOKEN');
+
+        $response->assertStatus(200);
+        $response->assertSee($this->getPasswordResetURL());
+    }
 
     /** @test */
     public function user_can_change_his_password_using_valid_reset_token()
     {
-        $user = $this->createUser('john@gmail.com', '123456');
+        $user = $this->createUserOrAdmin('john@example.com', '123456');
         $valid_token = $this->generatePasswordResetToken($user);
         $this->assertUserPasswordIs('123456', $user->password);
 
-        $response = $this->post('/password/reset', [
+        $response = $this->post($this->getPasswordResetURL(), [
             'token' => $valid_token,
-            'email' => 'john@gmail.com',
+            'email' => 'john@example.com',
             'password' => 'new-password',
             'password_confirmation' => 'new-password',
         ]);
 
-        $response->assertRedirect('/home');
         $this->assertUserPasswordIs('new-password', $user->fresh()->password);
+        $response->assertRedirect($this->getSuccessfulRedirectURL());
+        $this->assertTrue($this->verifyLoggedIn());
     }
 
     /** @test */
     public function user_cannot_change_his_password_using_invalid_token()
     {
-        $user = $this->createUser('john@gmail.com', '123456');
+        $user = $this->createUserOrAdmin('john@example.com', '123456');
         $this->assertUserPasswordIs('123456', $user->password);
 
-        $response = $this->postFrom('/password/reset', [
+        $response = $this->postFrom($this->getPasswordResetURL(), [
             'token' => 'invalid_token',
-            'email' => 'john@gmail.com',
+            'email' => 'john@example.com',
             'password' => 'new-password',
             'password_confirmation' => 'new-password',
         ]);
 
         $this->assertUserPasswordIs('123456', $user->fresh()->password);
-        $response->assertRedirect('/password/reset');
+        $response->assertRedirect($this->getPasswordResetURL());
         $response->assertSessionHasErrors('email');
     }
 
     /** @test */
     public function user_with_valid_reset_token_cannot_change_another_users_password()
     {
-        $user_one = $this->createUser('user_one@gmail.com', '123456');
-        $user_two = $this->createUser('user_two@gmail.com', 'abcxyz');
+        $user_one = $this->createUserOrAdmin('user_one@gmail.com', '123456');
+        $user_two = $this->createUserOrAdmin('user_two@gmail.com', 'abcxyz');
         $valid_token_of_user_one = $this->generatePasswordResetToken($user_one);
         $this->assertUserPasswordIs('123456', $user_one->password);
         $this->assertUserPasswordIs('abcxyz', $user_two->password);
 
-        $response = $this->postFrom('/password/reset', [
+        $response = $this->postFrom($this->getPasswordResetURL(), [
             'token' => $valid_token_of_user_one,
             'email' => 'user_two@gmail.com',
             'password' => 'new-password',
@@ -71,26 +86,18 @@ class UserCanChangePasswordTest extends TestCase
     /** @test */
     public function user_cannot_change_password_using_expired_token()
     {
-        $user = $this->createUser('john@gmail.com', '123456');
+        $user = $this->createUserOrAdmin('john@example.com', '123456');
         $this->assertUserPasswordIs('123456', $user->password);
         $expired_token = $this->generateExpiredPasswordResetToken($user);
 
-        $response = $this->post('/password/reset', [
+        $response = $this->post($this->getPasswordResetURL(), [
             'token' => $expired_token,
-            'email' => 'john@gmail.com',
+            'email' => 'john@example.com',
             'password' => 'new-password',
             'password_confirmation' => 'new-password',
         ]);
 
         $this->assertUserPasswordIs('123456', $user->fresh()->password);
         $response->assertSessionHasErrors('email');
-    }
-
-    public function createUser($email, $password)
-    {
-        return factory(User::class)->create([
-            'email' => $email,
-            'password' => bcrypt($password)
-        ]);
     }
 }

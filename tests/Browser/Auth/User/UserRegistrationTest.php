@@ -1,6 +1,6 @@
 <?php
 
-namespace Tests\Browser\Auth;
+namespace Tests\Browser\Auth\User;
 
 use App\User;
 use Tests\DuskTestCase;

@@ -43,7 +43,7 @@
             </div>
         </div>
         <div class="field">
-            <a href="{{ route('password.request') }}">Forgot password?</a>
+            <a href="{{ route('admin.password.request') }}">Forgot password?</a>
         </div>
     </div>
 </div>

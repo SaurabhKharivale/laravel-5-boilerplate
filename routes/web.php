@@ -27,7 +27,15 @@ Route::post('/password/change', 'Auth\ChangePasswordController@change')->name('p
 Route::get('/activate/{token}', 'Frontend\ActivationController@activate')->name('activation');
 Route::get('/resend-activation-link', 'Frontend\ActivationController@resend');
 
-Route::get('/admin/login', 'Auth\AdminLoginController@showLoginForm')->name('admin.login');
-Route::post('/admin/login', 'Auth\AdminLoginController@login');
-Route::post('/admin/logout', 'Auth\AdminLoginController@logout')->name('admin.logout');
-Route::get('/admin/dashboard', 'Admin\DashboardController@index')->name('admin.dashboard');
+Route::prefix('admin')->group(function () {
+    Route::get('/login', 'Auth\AdminLoginController@showLoginForm')->name('admin.login');
+    Route::post('/login', 'Auth\AdminLoginController@login');
+    Route::post('/logout', 'Auth\AdminLoginController@logout')->name('admin.logout');
+
+    Route::post('/password/email', 'Admin\ForgotPasswordController@sendResetLinkEmail')->name('admin.password.email');
+    Route::post('/password/reset', 'Admin\ResetPasswordController@reset');
+    Route::get('/password/reset', 'Admin\ForgotPasswordController@showLinkRequestForm')->name('admin.password.request');
+    Route::get('/password/reset/{token}', 'Admin\ResetPasswordController@showResetForm')->name('admin.password.reset');
+
+    Route::get('/dashboard', 'Admin\DashboardController@index')->name('admin.dashboard');
+});

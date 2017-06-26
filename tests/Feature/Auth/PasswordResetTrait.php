@@ -11,7 +11,7 @@ trait PasswordResetTrait
     public function assertPasswordResetTokenExists($email)
     {
         $record = $this->getPasswordReset($email);
-        $this->assertCount(1, $record);
+        $this->assertCount(1, $record, "Password reset token not found for user with email '{$email}'");
         $this->assertNotNull($record->first()->token);
     }
 

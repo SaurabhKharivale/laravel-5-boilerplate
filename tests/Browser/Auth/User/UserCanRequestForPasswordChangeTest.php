@@ -1,6 +1,6 @@
 <?php
 
-namespace Tests\Browser\Auth;
+namespace Tests\Browser\Auth\User;
 
 use App\User;
 use Tests\DuskTestCase;
@@ -18,7 +18,9 @@ class UserCanRequestForPasswordChangeTest extends DuskTestCase
         factory(User::class)->create(['email' => 'john@gmail.com']);
 
         $this->browse(function (Browser $browser) {
-            $browser->visit(new PasswordResetEmailPage)
+            $browser->visit('/login')
+                    ->clickLink('Forgot password')
+                    ->on(new PasswordResetEmailPage)
                     ->type('email', 'john@gmail.com')
                     ->press('@send-reset-link')
                     ->waitForText('We have e-mailed your password reset link');
