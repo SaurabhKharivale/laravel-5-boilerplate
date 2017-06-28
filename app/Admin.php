@@ -20,4 +20,18 @@ class Admin extends Authenticatable
     {
         $this->notify(new AdminResetPasswordNotification($token));
     }
+
+    public function roles()
+    {
+        return $this->belongsToMany(Role::class);
+    }
+
+    public function assignRole($role)
+    {
+        if(! is_array($role)) {
+            $role = [$role];
+        }
+
+        $this->roles()->saveMany($role);
+    }
 }

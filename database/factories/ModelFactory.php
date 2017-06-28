@@ -1,7 +1,9 @@
 <?php
 
 use App\User;
+use App\Role;
 use App\Admin;
+use App\Permission;
 use App\SocialAccount;
 
 /*
@@ -47,5 +49,21 @@ $factory->define(Admin::class, function (Faker\Generator $faker) {
         'email' => $faker->unique()->safeEmail,
         'password' => $password ?: $password = bcrypt('secret'),
         'remember_token' => str_random(10),
+    ];
+});
+
+$factory->define(Role::class, function (Faker\Generator $faker) {
+
+    return [
+        'name' => 'executive',
+        'label' => 'Executive',
+    ];
+});
+
+$factory->define(Permission::class, function (Faker\Generator $faker) {
+
+    return [
+        'name' => 'view-revenue',
+        'label' => 'View revenue',
     ];
 });
