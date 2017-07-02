@@ -5,9 +5,9 @@ namespace Tests\Feature\Auth\User;
 use App\User;
 use Tests\TestCase;
 use App\Events\UserRegistered;
-use Tests\Traits\UserAssertions;
 use Illuminate\Support\Facades\Event;
 use Illuminate\Database\QueryException;
+use Tests\Support\Assertions\UserAssertions;
 use Illuminate\Validation\ValidationException;
 
 class UserCanRegisterTest extends TestCase

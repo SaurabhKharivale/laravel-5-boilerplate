@@ -5,8 +5,8 @@ namespace Tests\Unit;
 use App\User;
 use Tests\TestCase;
 use App\SocialAccount;
-use Tests\Traits\UserAssertions;
 use App\Repositories\UserRepository;
+use Tests\Support\Assertions\UserAssertions;
 use App\Exceptions\AccountCreationFailedException;
 use App\Exceptions\SocialAccountNotLinkedException;
 

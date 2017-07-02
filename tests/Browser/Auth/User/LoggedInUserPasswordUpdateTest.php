@@ -5,9 +5,9 @@ namespace Tests\Browser\Auth\User;
 use App\User;
 use Tests\DuskTestCase;
 use Laravel\Dusk\Browser;
-use Tests\Traits\UserAssertions;
 use Tests\Browser\Pages\ProfilePage;
 use Tests\Feature\Auth\PasswordResetTrait;
+use Tests\Support\Assertions\UserAssertions;
 
 class LoggedInUserPasswordUpdateTest extends DuskTestCase
 {

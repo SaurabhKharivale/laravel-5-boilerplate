@@ -5,8 +5,8 @@ namespace Tests\Feature\Forntend\Activation;
 use Event;
 use App\User;
 use Tests\TestCase;
-use Tests\Traits\UserAssertions;
 use App\Events\ActivationEmailRequested;
+use Tests\Support\Assertions\UserAssertions;
 
 class UserCanActivateHisAccountTest extends TestCase
 {

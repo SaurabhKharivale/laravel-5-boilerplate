@@ -5,10 +5,10 @@ namespace Tests\Feature\Frontend;
 use Hash;
 use App\User;
 use Tests\TestCase;
-use Tests\Traits\UserAssertions;
-use Tests\Traits\SessionAssertions;
+use Tests\Support\Assertions\UserAssertions;
 use App\Exceptions\PasswordMismatchException;
 use Illuminate\Validation\ValidationException;
+use Tests\Support\Assertions\SessionAssertions;
 
 class LoggedInUserCanUpdateHisPasswordTest extends TestCase
 {

@@ -4,8 +4,8 @@ namespace Tests\Feature\Frontend\Activation;
 
 use App\User;
 use App\Mail\ActivationEmail;
-use Tests\Traits\UserAssertions;
 use Illuminate\Support\Facades\Mail;
+use Tests\Support\Assertions\UserAssertions;
 
 trait ConformsToEmailContractTests
 {

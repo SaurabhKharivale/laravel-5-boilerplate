@@ -4,8 +4,8 @@ namespace Tests\Unit\Repositories;
 
 use App\User;
 use Tests\TestCase;
-use Tests\Traits\UserAssertions;
 use App\Repositories\ActivationRepository;
+use Tests\Support\Assertions\UserAssertions;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 
 class ActivationRepositoryTest extends TestCase

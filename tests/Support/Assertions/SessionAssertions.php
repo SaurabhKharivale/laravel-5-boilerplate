@@ -1,6 +1,6 @@
 <?php
 
-namespace Tests\Traits;
+namespace Tests\Support\Assertions;
 
 trait SessionAssertions
 {

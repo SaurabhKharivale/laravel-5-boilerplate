@@ -7,7 +7,7 @@ use App\User;
 use Socialite;
 use Tests\TestCase;
 use App\SocialAccount;
-use Tests\Traits\UserAssertions;
+use Tests\Support\Assertions\UserAssertions;
 use App\Exceptions\AccountCreationFailedException;
 
 class UserCanLoginUsingSocialAccountTest extends TestCase

@@ -5,7 +5,7 @@ namespace Tests\Browser\Auth;
 use App\User;
 use Tests\DuskTestCase;
 use Laravel\Dusk\Browser;
-use Tests\Traits\UserAssertions;
+use Tests\Support\Assertions\UserAssertions;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
 
 class AccountActivationTest extends DuskTestCase
