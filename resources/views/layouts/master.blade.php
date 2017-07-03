@@ -35,5 +35,8 @@
     <script src="{{ mix('/js/vendor.js') }}"></script>
     <script src="{{ mix('js/core.js') }}"></script>
     <script src="{{ mix('js/app.js') }}"></script>
+    @if(auth()->guard('admin')->check())
+    <script src="{{ mix('js/admin.js') }}"></script>
+    @endif
 </body>
 </html>

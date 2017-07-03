@@ -1,5 +1,6 @@
 require('./bootstrap');
 
+Vue.component('modal', require('./core/components/Modal.vue'));
 Vue.component('notifier', require('./core/components/Notification/Notifier.vue'));
 
 new Vue({

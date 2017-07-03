@@ -75,7 +75,7 @@ class AdminCanLoginTest extends TestCase
         $response = $this->get('/admin/dashboard');
 
         $response->assertStatus(200);
-        $response->assertSee('logged in as admin');
+        $response->assertSee('Admin dashboard');
     }
 
     /** @test */
