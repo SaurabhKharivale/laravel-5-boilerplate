@@ -13,6 +13,46 @@ class CreateNewAdminTest extends DuskTestCase
     use AdminHelpers;
 
     /** @test */
+    public function super_admins_has_access_to_admin_creation_form()
+    {
+        $super_admin = $this->createSuperAdmin('admin@example.com');
+
+        $this->browse(function (Browser $browser) use ($super_admin) {
+            $browser->loginAs($super_admin, 'admin')
+                    ->visit(new DashboardPage)
+                    ->press('@create-new-admin')
+                    ->assertSeeIn('#admin', 'New admin details');
+        });
+    }
+
+    /** @test */
+    public function admin_with_create_permission_has_access_to_admin_creation_form()
+    {
+        $role = $this->createRoleWithPermission('manager', 'create-admin');
+        $admin = factory(Admin::class)->create(['email' => 'manager@example.com']);
+        $admin->assignRole($role);
+
+        $this->browse(function (Browser $browser) use ($admin) {
+            $browser->loginAs($admin, 'admin')
+                    ->visit(new DashboardPage)
+                    ->press('@create-new-admin')
+                    ->assertSeeIn('#admin', 'New admin details');
+        });
+    }
+
+    /** @test */
+    public function admin_without_create_permission_cannot_access_admin_creation_form()
+    {
+        $admin = factory(Admin::class)->create(['email' => 'manager@example.com']);
+
+        $this->browse(function (Browser $browser) use ($admin) {
+            $browser->loginAs($admin, 'admin')
+                    ->visit(new DashboardPage)
+                    ->assertDontSeeIn('#admin', 'Create new admin');
+        });
+    }
+
+    /** @test */
     public function super_admin_can_create_account_for_other_admins()
     {
         $super_admin = $this->createSuperAdmin('admin@example.com');
