@@ -22,7 +22,7 @@ class AdminLoginTest extends DuskTestCase
                     ->type('password', 'secret')
                     ->press('Login')
                     ->assertPathIs('/admin/dashboard')
-                    ->assertSee('logged in as admin');
+                    ->assertSee('Admin dashboard');
         });
     }
 
