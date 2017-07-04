@@ -63,12 +63,3 @@ export default {
     }
 };
 </script>
-
-<style>
-.notification-container {
-    max-width: 500px;
-    position: fixed;
-    top: 100px;
-    right: 25px;
-}
-</style>

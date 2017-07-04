@@ -19,6 +19,12 @@ class AdminController extends Controller
     {
         $this->authorize('create', Admin::class);
 
+        $this->validate(request(), [
+            'first_name' => 'required|min:3',
+            'last_name' => 'required|min:3',
+            'email' => 'required|unique:admins',
+        ]);
+
         Admin::create([
             'first_name' => request('first_name'),
             'last_name' => request('last_name'),

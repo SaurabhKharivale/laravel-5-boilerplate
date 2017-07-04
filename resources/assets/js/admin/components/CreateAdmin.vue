@@ -12,17 +12,26 @@
                         <input v-model="form.first_name" name="first_name" placeholder="First name" autofocus
                                 class="input" :class="{'is-danger': form.errors.has('first_name')}">
                     </p>
+                    <p class="help is-danger" v-if="form.errors.has('first_name')">
+                        {{ form.errors.get('first_name') }}
+                    </p>
                 </div>
                 <div class="field">
                     <p class="control">
                         <input v-model="form.last_name" name="last_name" placeholder="Last name"
                                 class="input" :class="{'is-danger': form.errors.has('last_name')}">
                     </p>
+                    <p class="help is-danger" v-if="form.errors.has('last_name')">
+                        {{ form.errors.get('last_name') }}
+                    </p>
                 </div>
                 <div class="field">
                     <p class="conctrol">
                         <input v-model="form.email" name="email" placeholder="Email"
                                 class="input" :class="{'is-danger': form.errors.has('email')}">
+                    </p>
+                    <p class="help is-danger" v-if="form.errors.has('email')">
+                        {{ form.errors.get('email') }}
                     </p>
                 </div>
                 <div class="field">
@@ -49,10 +58,11 @@ export default {
     },
     methods: {
         submit() {
-            this.creating = false;
-
             this.form.submit('post', '/api/admin')
-                .then((response) => flash(response.message, response.type))
+                .then((response) => {
+                    this.creating = false;
+                    flash(response.message, response.type);
+                })
                 .catch((error) => flash('Admin creation failed. Please Try again.', 'danger'));
         }
     }
