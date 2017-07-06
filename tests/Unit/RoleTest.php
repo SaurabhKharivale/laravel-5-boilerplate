@@ -1,12 +1,12 @@
 <?php
 
-namespace Tests\Feature\Authorization;
+namespace Tests\Unit;
 
 use App\Role;
 use App\Permission;
 use Tests\TestCase;
 
-class PremissionsCanBeGrantedToRoleTest extends TestCase
+class RoleTest extends TestCase
 {
     /** @test */
     public function can_grant_permission_to_a_role()
@@ -33,5 +33,6 @@ class PremissionsCanBeGrantedToRoleTest extends TestCase
 
         $this->assertCount(2, $manager_role->fresh()->permissions);
         $this->assertTrue($manager_role->fresh()->permissions->contains('name', 'view-revenue'));
+        $this->assertTrue($manager_role->fresh()->permissions->contains('name', 'generate-report'));
     }
 }

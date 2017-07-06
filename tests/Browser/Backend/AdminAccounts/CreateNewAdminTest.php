@@ -21,7 +21,7 @@ class CreateNewAdminTest extends DuskTestCase
             $browser->loginAs($super_admin, 'admin')
                     ->visit(new DashboardPage)
                     ->press('@create-new-admin')
-                    ->assertSeeIn('#admin', 'New admin details');
+                    ->waitForText('New admin details');
         });
     }
 
@@ -36,7 +36,7 @@ class CreateNewAdminTest extends DuskTestCase
             $browser->loginAs($admin, 'admin')
                     ->visit(new DashboardPage)
                     ->press('@create-new-admin')
-                    ->assertSeeIn('#admin', 'New admin details');
+                    ->waitForText('New admin details');
         });
     }
 
@@ -111,18 +111,7 @@ class CreateNewAdminTest extends DuskTestCase
         $this->browse(function (Browser $browser) use ($admin) {
             $browser->loginAs($admin, 'admin')
                     ->visit(new DashboardPage)
-                    ->press('@create-new-admin')
-                    ->waitForText('New admin details')
-                    ->type('first_name', 'Jane')
-                    ->type('last_name', 'Doe')
-                    ->type('email', 'jane@example.com')
-                    ->press('@save-admin')
-                    ->waitForText('Admin creation failed.');
+                    ->assertDontSee('@create-new-admin');
         });
-
-        $this->assertCount(1, Admin::all());
-        $this->assertDatabaseMissing('admins', [
-            'email' => 'jane@example.com',
-        ]);
     }
 }

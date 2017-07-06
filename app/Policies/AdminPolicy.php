@@ -26,8 +26,18 @@ class AdminPolicy
         }
     }
 
+    public function view(Admin $admin)
+    {
+        return $admin->hasPermissionTo('view-admin-details');
+    }
+
     public function create(Admin $admin)
     {
         return $admin->hasPermissionTo('create-admin');
+    }
+
+    public function assign(Admin $admin)
+    {
+        return $admin->hasPermissionTo('assign-role');
     }
 }

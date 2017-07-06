@@ -1,6 +1,6 @@
 <?php
 
-namespace Tests\Feature\Backend\AdminAccounts;
+namespace Tests\Feature\Backend\Permissions;
 
 use App\Admin;
 use App\Role;
@@ -8,7 +8,7 @@ use Tests\TestCase;
 use Tests\Support\Helpers\AdminHelpers;
 use Tests\Support\Assertions\AdminAssertions;
 
-class AdminWithCreatePermissionCanCreateOtherAdminsTest extends TestCase
+class CreateAdminTest extends TestCase
 {
     use AdminHelpers, AdminAssertions;
 
@@ -57,27 +57,6 @@ class AdminWithCreatePermissionCanCreateOtherAdminsTest extends TestCase
         $response->assertJson([
             'message' => 'New admin user created.',
             'type' => 'success',
-        ]);
-    }
-
-    /** @test */
-    public function super_admin_can_get_detials_of_other_admins()
-    {
-        $super_admin = $this->createSuperAdmin('super@admin.com');
-        $this->actingAs($super_admin, 'admin-api');
-        factory(Admin::class)->create(['email' => 'first@admin.com']);
-        factory(Admin::class)->create(['email' => 'second@admin.com']);
-        factory(Admin::class)->create(['email' => 'third@admin.com']);
-
-        $response = $this->json('GET', '/api/admin');
-
-        $response->assertJson([
-            'admins' => [
-                ['email' => 'super@admin.com'],
-                ['email' => 'first@admin.com'],
-                ['email' => 'second@admin.com'],
-                ['email' => 'third@admin.com'],
-            ]
         ]);
     }
 

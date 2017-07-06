@@ -10,7 +10,9 @@ class AdminController extends Controller
 {
     public function index()
     {
-        $admins = Admin::all();
+        $this->authorize('view', Admin::class);
+
+        $admins = Admin::with('roles', 'roles.permissions')->get();
 
         return response()->json(['admins' => $admins]);
     }
