@@ -26,23 +26,23 @@
                 </tr>
             </tbody>
         </table>
-        <p v-show="error">Unable to load admins data</p>
+        <p v-show="error">Unable to load admins data.</p>
 
         <modal :active="managing" @hide="managing = false">
-            <assign-role v-if="selectedAdmin" :admin="selectedAdmin"></assign-role>
+            <manage-role v-if="selectedAdmin" :admin="selectedAdmin"></manage-role>
         </modal>
     </div>
 </template>
 
 <script>
-import AssignRole from './AssignRole';
+import ManageRole from './ManageRole';
 
 export default {
     mounted() {
         this.getAll();
     },
     components: {
-        AssignRole,
+        ManageRole,
     },
     data() {
         return {

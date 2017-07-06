@@ -40,4 +40,9 @@ class AdminPolicy
     {
         return $admin->hasPermissionTo('assign-role');
     }
+
+    public function remove(Admin $admin)
+    {
+        return $admin->hasPermissionTo('remove-role');
+    }
 }

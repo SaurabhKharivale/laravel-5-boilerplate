@@ -3,8 +3,9 @@
 namespace App\Exceptions;
 
 use Exception;
-use App\Exceptions\PasswordMismatchException;
 use Illuminate\Auth\AuthenticationException;
+use App\Exceptions\PasswordMismatchException;
+use Illuminate\Auth\Access\AuthorizationException;
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
 
 class Handler extends ExceptionHandler
@@ -49,6 +50,12 @@ class Handler extends ExceptionHandler
             return redirect()->back()->withErrors([
                 'current_password' => $exception->getMessage()
             ]);
+        }
+
+        if($exception instanceOf AuthorizationException && $request->expectsJson()) {
+            return response()->json([
+                'message' => $exception->getMessage()
+            ], 403);
         }
 
         return parent::render($request, $exception);

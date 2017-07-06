@@ -20,6 +20,7 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 Route::middleware('auth:admin-api')->group(function() {
     Route::resource('admin', 'Admin\AdminController', ['only' => ['index', 'store']]);
     Route::post('/admin/{admin}/role', 'Admin\AdminRoleController@assignRole');
+    Route::delete('/admin/{admin}/role', 'Admin\AdminRoleController@removeRole');
 
     Route::resource('role', 'Backend\RoleController', ['only' => ['index']]);
 });

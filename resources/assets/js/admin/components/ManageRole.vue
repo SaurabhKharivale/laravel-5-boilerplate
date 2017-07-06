@@ -4,7 +4,7 @@
         <div class="field">
             <span v-for="role in admin.roles" class="tag is-medium">
                 {{ role.name }}
-                <a class="delete is-small"></a>
+                <a class="delete is-small" @click="remove(role)"></a>
             </span>
         </div>
         <div class="field" v-if="availableRoles.length > 0">
@@ -44,17 +44,21 @@ export default {
         },
         availableRoles() {
             return this.roles.filter(role => ! _.find(this.admin.roles, role));
+        },
+        url() {
+            return '/api/admin/' + this.admin.id + '/role';
         }
     },
     methods: {
         assign() {
-            axios.post('/api/admin/' + this.admin.id + '/role', {'role_id': this.role})
-                .then(response => {
-                    flash('New role assined to ' + this.name);
-                })
-                .catch(error => {
-                    flash('Failed assigning role');
-                });
+            axios.post(this.url, {'role_id': this.role})
+                .then(response => flash('New role assined to ' + this.name))
+                .catch(error => flash(error.message));
+        },
+        remove(role) {
+            axios.delete(this.url, {params: {'role_id': role.id}})
+                .then(response => flash(response.data.message))
+                .catch(error => flash(error.message));
         }
     }
 }
