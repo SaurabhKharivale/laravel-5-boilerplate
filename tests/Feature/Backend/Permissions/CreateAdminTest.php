@@ -15,13 +15,13 @@ class CreateAdminTest extends TestCase
     /** @test */
     public function only_admins_with_create_permission_can_create_new_admin_accounts()
     {
-        $manager = $this->createRoleWithPermission('manager', 'create-admin');
-        $admin = factory(Admin::class)->create();
-        $admin->assignRole($manager);
-        $this->actingAs($admin, 'admin-api');
+        $admin = $this->createAdmin([
+            'role' => 'manager',
+            'permission' => 'create-admin',
+        ]);
         $this->assertCount(1, Admin::all());
 
-        $response = $this->post('/api/admin', [
+        $response = $this->actingAs($admin, 'admin-api')->json('POST', '/api/admin', [
             'first_name' => 'Jane',
             'last_name' => 'Doe',
             'email' => 'jane@example.com',
@@ -39,13 +39,10 @@ class CreateAdminTest extends TestCase
     /** @test */
     public function super_admin_can_create_other_admin_user_even_when_no_permission_is_assigned()
     {
-        $super_admin = factory(Admin::class)->create();
-        $role = factory(Role::class)->create(['name' => 'super-admin']);
-        $super_admin->assignRole($role);
-        $this->actingAs($super_admin, 'admin-api');
+        $super_admin = $this->createAdmin(['role' => 'super-admin']);
         $this->assertCount(1, Admin::all());
 
-        $response = $this->json('POST', '/api/admin', [
+        $response = $this->actingAs($super_admin, 'admin-api')->json('POST', '/api/admin', [
             'first_name' => 'Jane',
             'last_name' => 'Doe',
             'email' => 'jane@example.com',
@@ -65,16 +62,15 @@ class CreateAdminTest extends TestCase
     {
         $this->withExceptionHandling();
         $admin = factory(Admin::class)->create();
-        $this->actingAs($admin, 'admin-api');
         $this->assertCount(1, Admin::all());
 
-        $response = $this->json('POST', '/api/admin', [
+        $response = $this->actingAs($admin, 'admin-api')->json('POST', '/api/admin', [
             'first_name' => 'Jane',
             'last_name' => 'Doe',
             'email' => 'jane@example.com',
         ]);
 
-        $response->assertStatus(403);
+        $this->assertActionIsUnauthorized($response);
         $this->assertCount(1, Admin::all());
         $this->assertAdminUserDoesNotExists('jane@example.com');
     }
@@ -83,12 +79,12 @@ class CreateAdminTest extends TestCase
     public function cannot_create_multiple_admin_account_with_same_email_address()
     {
         $this->withExceptionHandling();
-        $admin_one = $this->createSuperAdmin('admin@example.com');
-        $this->actingAs($admin_one, 'admin-api');
-        $admin_two = factory(Admin::class)->create(['email' => 'jane@example.com']);
+        $admin_one = $this->createAdmin(['role' => 'super-admin']);
+        $admin_two = $this->createAdmin(['email' => 'jane@example.com']);
         $this->assertCount(2, Admin::all());
+        $this->assertAdminUserExists('jane@example.com');
 
-        $response = $this->json('POST', '/api/admin', [
+        $response = $this->actingAs($admin_one, 'admin-api')->json('POST', '/api/admin', [
             'first_name' => 'Jane',
             'last_name' => 'Doe',
             'email' => 'jane@example.com',
@@ -105,11 +101,10 @@ class CreateAdminTest extends TestCase
     public function it_should_not_pass_validation_for_empty_admin_details()
     {
         $this->withExceptionHandling();
-        $admin = $this->createSuperAdmin('admin@example.com');
-        $this->actingAs($admin, 'admin-api');
+        $admin = $this->createAdmin(['role' => 'super-admin']);
         $this->assertCount(1, Admin::all());
 
-        $response = $this->json('POST', '/api/admin', [
+        $response = $this->actingAs($admin, 'admin-api')->json('POST', '/api/admin', [
             'first_name' => null,
             'last_name' => null,
             'email' => null,
@@ -128,11 +123,10 @@ class CreateAdminTest extends TestCase
     public function first_and_last_name_must_have_atleast_3_characters()
     {
         $this->withExceptionHandling();
-        $admin = $this->createSuperAdmin('admin@example.com');
-        $this->actingAs($admin, 'admin-api');
+        $admin = $this->createAdmin(['role' => 'super-admin']);
         $this->assertCount(1, Admin::all());
 
-        $response = $this->json('POST', '/api/admin', [
+        $response = $this->actingAs($admin, 'admin-api')->json('POST', '/api/admin', [
             'first_name' => 'ab',
             'last_name' => 'xy',
             'email' => 'jane@example.com',

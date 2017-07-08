@@ -8,34 +8,42 @@ use App\Permission;
 
 trait AdminHelpers
 {
-    public function createSuperAdmin($email)
+    public function createAdmin($data)
     {
-        $super_admin = factory(Role::class)->create(['name' => 'super-admin']);
-        $admin = factory(Admin::class)->create(['email' => $email]);
-        $admin->assignRole($super_admin);
+        $email = isset($data['email']) ? $data['email'] : null;
+        $admin = $this->createAdminAccount($email);
+
+        if(isset($data['role'])) {
+            $role = factory(Role::class)->create(['name' => $data['role']]);
+            $admin->assignRole($role);
+
+            if(isset($data['permission'])) {
+                $this->attachPermissionToRole($role, $data['permission']);
+            }
+        }
 
         return $admin;
     }
 
-    public function createRoleWithPermissions($role, $permissions = [])
-    {
-        $role = factory(Role::class)->create(['name' => $role]);
+    private function attachPermissionToRole($role, $permissions) {
+        if(is_string($permissions)) {
+            $permission = factory(Permission::class)->create(['name' => $permissions]);
+            $role->grantPermission($permission);
 
-        if($permissions) {
-            foreach ($permissions as $permission) {
-                $role->grantPermission(
-                    factory(Permission::class)->create(['name' => $permission])
-                );
-            }
+            return;
         }
 
-        return $role;
+        foreach ($permissions as $permission) {
+            $role->grantPermission(factory(Permission::class)->create(['name' => $permission]));
+        }
     }
 
-    public function createRoleWithPermission($role, $permission = null)
+    private function createAdminAccount($email)
     {
-        $permissions = $permission ? [$permission] : [];
+        if($email) {
+            return factory(Admin::class)->create(['email' => $email]);
+        }
 
-        return $this->createRoleWithPermissions($role, $permissions);
+        return factory(Admin::class)->create();
     }
 }

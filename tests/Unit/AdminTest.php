@@ -32,12 +32,15 @@ class AdminTest extends TestCase
     public function can_check_if_admin_has_certain_permission()
     {
         $admin = factory(Admin::class)->create(['email' => 'admin@example.com']);
+        $role = factory(Role::class)->create(['name' => 'manager']);
+        $permission = factory(Permission::class)->create(['name' => 'view-revenue']);
+        $role->grantPermission($permission);
         $this->assertFalse($admin->fresh()->hasPermissionTo('view-revenue'));
 
-        $role = $this->createRoleWithPermission('manager', 'view-revenue');
         $admin->assignRole($role);
 
         $this->assertTrue($admin->fresh()->hasPermissionTo('view-revenue'));
+        $this->assertFalse($admin->fresh()->hasPermissionTo('permission-does-not-exists'));
     }
 
     /** @test */
@@ -70,7 +73,7 @@ class AdminTest extends TestCase
     /** @test */
     public function can_check_if_admin_is_super_admin()
     {
-        $admin_one = $this->createSuperAdmin('admin@example.com');
+        $admin_one = $this->createAdmin(['role' => 'super-admin']);
         $admin_two = factory(Admin::class)->create();
 
         $this->assertTrue($admin_one->isSuperAdmin());

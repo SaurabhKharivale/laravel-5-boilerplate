@@ -15,7 +15,7 @@ class ViewAdminDetailsTest extends TestCase
     /** @test */
     public function super_admin_can_get_detials_of_other_admins()
     {
-        $super_admin = $this->createSuperAdmin('super@admin.com');
+        $super_admin = $this->createAdmin(['email' => 'super@admin.com', 'role' => 'super-admin']);
         factory(Admin::class)->create(['email' => 'first@admin.com']);
         factory(Admin::class)->create(['email' => 'second@admin.com']);
         factory(Admin::class)->create(['email' => 'third@admin.com']);
@@ -36,9 +36,11 @@ class ViewAdminDetailsTest extends TestCase
     /** @test */
     public function admin_with_view_permission_can_get_details_of_other_admins()
     {
-        $role = $this->createRoleWithPermission('manager', 'view-admin-details');
-        $admin = factory(Admin::class)->create(['email' => 'admin@example.com']);
-        $admin->assignRole($role);
+        $admin = $this->createAdmin([
+            'email' => 'admin@example.com',
+            'role' => 'manager',
+            'permission' => 'view-admin-details',
+        ]);
         factory(Admin::class)->create(['email' => 'first@admin.com']);
         factory(Admin::class)->create(['email' => 'second@admin.com']);
         factory(Admin::class)->create(['email' => 'third@admin.com']);
@@ -67,16 +69,21 @@ class ViewAdminDetailsTest extends TestCase
 
         $response = $this->actingAs($admin, 'admin-api')->json('GET', '/api/admin');
 
-        $response->assertStatus(403);
+        $this->assertActionIsUnauthorized($response);
     }
 
     /** @test */
     public function admin_roles_and_their_associated_permissions_are_contained_within_admin_details()
     {
-        $super_admin = $this->createSuperAdmin('super@admin.com');
-        $admin_one = factory(Admin::class)->create(['email' => 'first@admin.com']);
-        $manager_role = $this->createRoleWithPermissions('manager', ['view-revenue', 'assign-role']);
-        $admin_one->assignRole($manager_role);
+        $super_admin = $this->createAdmin([
+            'email' => 'super@admin.com',
+            'role' => 'super-admin',
+        ]);
+        $admin = $this->createAdmin([
+            'email' => 'first@admin.com',
+            'role' => 'manager',
+            'permission' => ['view-revenue', 'assign-role'],
+        ]);
 
         $response = $this->actingAs($super_admin, 'admin-api')->json('GET', '/api/admin');
 
