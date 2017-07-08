@@ -14,43 +14,45 @@ class AdminCanResetHisPasswordTest extends DuskTestCase
     /** @test */
     public function admin_can_reset_password_with_valid_reset_token()
     {
-        $user = factory(Admin::class)->create([
+        $admin = factory(Admin::class)->create([
             'email' => 'admin@example.com',
             'password' => bcrypt('123456')
         ]);
-        $token = $this->generatePasswordResetToken($user);
-        $this->assertUserPasswordIs('123456', $user->password);
+        $token = $this->generatePasswordResetToken($admin);
+        $this->assertAdminPasswordIs('123456', $admin);
 
         $this->browse(function (Browser $browser) use ($token) {
             $browser->visit("/admin/password/reset/$token")
                     ->type('email', 'admin@example.com')
                     ->type('password', 'new-password')
                     ->type('password_confirmation', 'new-password')
-                    ->press('Reset');
+                    ->press('Reset')
+                    ->assertPathIs('/admin/dashboard');
         });
 
-        $this->assertUserPasswordIs('new-password', $user->fresh()->password);
+        $this->assertAdminPasswordIs('new-password', $admin);
     }
 
     /** @test */
     public function admin_cannot_reset_password_using_invalid_password_reset_token()
     {
-        $user = factory(Admin::class)->create([
+        $admin = factory(Admin::class)->create([
             'email' => 'admin@example.com',
             'password' => bcrypt('123456')
         ]);
-        $token = $this->generatePasswordResetToken($user);
-        $this->assertUserPasswordIs('123456', $user->password);
+        $token = $this->generatePasswordResetToken($admin);
+        $this->assertAdminPasswordIs('123456', $admin);
 
         $this->browse(function (Browser $browser) {
             $browser->visit('/admin/password/reset/invalid_token')
                     ->type('email', 'admin@example.com')
                     ->type('password', 'new-password')
                     ->type('password_confirmation', 'new-password')
-                    ->press('Reset');
+                    ->press('Reset')
+                    ->waitForText('password reset token is invalid');
         });
 
-        $this->assertUserPasswordIs('123456', $user->password);
+        $this->assertAdminPasswordIs('123456', $admin);
     }
 
     /** @test */

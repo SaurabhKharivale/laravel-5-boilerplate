@@ -19,17 +19,18 @@ class UserCanResetHisPasswordTest extends DuskTestCase
             'password' => bcrypt('123456')
         ]);
         $token = $this->generatePasswordResetToken($user);
-        $this->assertUserPasswordIs('123456', $user->password);
+        $this->assertUserPasswordIs('123456', $user);
 
         $this->browse(function (Browser $browser) use ($token) {
             $browser->visit("/password/reset/$token")
                     ->type('email', 'john@doe.com')
                     ->type('password', 'new-password')
                     ->type('password_confirmation', 'new-password')
-                    ->press('Reset');
+                    ->press('Reset')
+                    ->assertPathIs('/home');
         });
 
-        $this->assertUserPasswordIs('new-password', $user->fresh()->password);
+        $this->assertUserPasswordIs('new-password', $user);
     }
 
     /** @test */
@@ -40,17 +41,18 @@ class UserCanResetHisPasswordTest extends DuskTestCase
             'password' => bcrypt('123456')
         ]);
         $token = $this->generatePasswordResetToken($user);
-        $this->assertUserPasswordIs('123456', $user->password);
+        $this->assertUserPasswordIs('123456', $user);
 
         $this->browse(function (Browser $browser) {
             $browser->visit('/password/reset/invalid_token')
                     ->type('email', 'john@doe.com')
                     ->type('password', 'new-password')
                     ->type('password_confirmation', 'new-password')
-                    ->press('Reset');
+                    ->press('Reset')
+                    ->waitForText('password reset token is invalid');
         });
 
-        $this->assertUserPasswordIs('123456', $user->password);
+        $this->assertUserPasswordIs('123456', $user);
     }
 
     /** @test */

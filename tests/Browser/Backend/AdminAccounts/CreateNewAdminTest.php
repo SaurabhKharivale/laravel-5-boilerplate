@@ -15,7 +15,7 @@ class CreateNewAdminTest extends DuskTestCase
     /** @test */
     public function super_admins_has_access_to_admin_creation_form()
     {
-        $super_admin = $this->createSuperAdmin('admin@example.com');
+        $super_admin = $this->createAdmin(['role' => 'super-admin']);
 
         $this->browse(function (Browser $browser) use ($super_admin) {
             $browser->loginAs($super_admin, 'admin')
@@ -28,9 +28,10 @@ class CreateNewAdminTest extends DuskTestCase
     /** @test */
     public function admin_with_create_permission_has_access_to_admin_creation_form()
     {
-        $role = $this->createRoleWithPermission('manager', 'create-admin');
-        $admin = factory(Admin::class)->create(['email' => 'manager@example.com']);
-        $admin->assignRole($role);
+        $admin = $this->createAdmin([
+            'role' => 'manager',
+            'permission' => 'create-admin',
+        ]);
 
         $this->browse(function (Browser $browser) use ($admin) {
             $browser->loginAs($admin, 'admin')
@@ -55,7 +56,7 @@ class CreateNewAdminTest extends DuskTestCase
     /** @test */
     public function super_admin_can_create_account_for_other_admins()
     {
-        $super_admin = $this->createSuperAdmin('admin@example.com');
+        $super_admin = $this->createAdmin(['role' => 'super-admin']);
         $this->assertCount(1, Admin::all());
 
         $this->browse(function (Browser $browser) use ($super_admin) {
@@ -71,17 +72,16 @@ class CreateNewAdminTest extends DuskTestCase
         });
 
         $this->assertCount(2, Admin::all());
-        $this->assertDatabaseHas('admins', [
-            'email' => 'jane@example.com',
-        ]);
+        $this->assertDatabaseHas('admins', ['email' => 'jane@example.com']);
     }
 
     /** @test */
     public function admin_with_create_permission_can_create_account_for_other_admins()
     {
-        $role = $this->createRoleWithPermission('manager', 'create-admin');
-        $admin = factory(Admin::class)->create();
-        $admin->assignRole($role);
+        $admin = $this->createAdmin([
+            'role' => 'manager',
+            'permission' => 'create-admin',
+        ]);
         $this->assertCount(1, Admin::all());
 
         $this->browse(function (Browser $browser) use ($admin) {
@@ -97,9 +97,7 @@ class CreateNewAdminTest extends DuskTestCase
         });
 
         $this->assertCount(2, Admin::all());
-        $this->assertDatabaseHas('admins', [
-            'email' => 'jane@example.com',
-        ]);
+        $this->assertDatabaseHas('admins', ['email' => 'jane@example.com']);
     }
 
     /** @test */

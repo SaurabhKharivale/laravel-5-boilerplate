@@ -36,7 +36,8 @@ class AdminCanRequestForPasswordChangeTest extends DuskTestCase
                     ->clickLink('Forgot password')
                     ->on(new AdminPasswordResetEmailPage)
                     ->type('email', 'admin@example.com')
-                    ->press('@send-reset-link');
+                    ->press('@send-reset-link')
+                    ->waitForText('We have e-mailed your password reset link');
         });
 
         $this->assertPasswordResetTokenExists('admin@example.com');

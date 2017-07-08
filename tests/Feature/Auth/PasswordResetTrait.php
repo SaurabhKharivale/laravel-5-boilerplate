@@ -33,9 +33,14 @@ trait PasswordResetTrait
         return count($record) ? $record->first()->token : null;
     }
 
-    public function assertUserPasswordIs($plain_text_password, $hased_password)
+    public function assertUserPasswordIs($plain_text_password, $user)
     {
-        $this->assertTrue(\Hash::check($plain_text_password, $hased_password), 'Password did not match.');
+        $this->assertTrue(\Hash::check($plain_text_password, $user->fresh()->password), 'Password did not match.');
+    }
+
+    public function assertAdminPasswordIs($plain_text_password, $user)
+    {
+        $this->assertUserPasswordIs($plain_text_password, $user);
     }
 
     public function generatePasswordResetToken($user)
