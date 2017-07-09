@@ -1,15 +1,15 @@
 <h1 align="center">Laravel 5.4 Boilerplate</h1>
---------------
+
 <p align="center">
-[![Build Status](https://travis-ci.org/SaurabhKharivale/laravel-5-boilerplate.svg?branch=master)](https://travis-ci.org/SaurabhKharivale/laravel-5-boilerplate)
-[ ![Codeship Status for SaurabhKharivale/laravel-5-boilerplate](https://app.codeship.com/projects/bef785f0-29a7-0135-4157-32050796008e/status?branch=master)](https://app.codeship.com/projects/223692)
+<a href="https://travis-ci.org/SaurabhKharivale/laravel-5-boilerplate"><img src="https://travis-ci.org/SaurabhKharivale/laravel-5-boilerplate.svg?branch=master" alt="Build Status"></a>
+<a href="https://app.codeship.com/projects/223692"><img src="https://app.codeship.com/projects/bef785f0-29a7-0135-4157-32050796008e/status?branch=master" alt="Codeship Status for SaurabhKharivale/laravel-5-boilerplate"></a>
 </p>
 
 ## Intro
 
-I wanted a laravel boilerplate which had basic features and help me setup new projects quickly.
+I created a laravel boilerplate which has basic features and help me setup new projects quickly.
 
-**NOTE**: This boilerplate does not provide easy customization.
+**NOTE**: This boilerplate does not provide out-of-box customization. But feel free to use and modify any code to your liking.
 
 ---
 
