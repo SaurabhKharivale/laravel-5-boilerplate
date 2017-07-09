@@ -30,7 +30,7 @@ trait CanChangePasswordTests
     {
         $user = $this->createUserOrAdmin('john@example.com', '123456');
         $valid_token = $this->generatePasswordResetToken($user);
-        $this->assertUserPasswordIs('123456', $user->password);
+        $this->assertUserPasswordIs('123456', $user);
 
         $response = $this->post($this->getPasswordResetURL(), [
             'token' => $valid_token,
@@ -39,7 +39,7 @@ trait CanChangePasswordTests
             'password_confirmation' => 'new-password',
         ]);
 
-        $this->assertUserPasswordIs('new-password', $user->fresh()->password);
+        $this->assertUserPasswordIs('new-password', $user);
         $response->assertRedirect($this->getSuccessfulRedirectURL());
         $this->assertTrue($this->verifyLoggedIn());
     }
@@ -48,7 +48,7 @@ trait CanChangePasswordTests
     public function user_cannot_change_his_password_using_invalid_token()
     {
         $user = $this->createUserOrAdmin('john@example.com', '123456');
-        $this->assertUserPasswordIs('123456', $user->password);
+        $this->assertUserPasswordIs('123456', $user);
 
         $response = $this->postFrom($this->getPasswordResetURL(), [
             'token' => 'invalid_token',
@@ -57,7 +57,7 @@ trait CanChangePasswordTests
             'password_confirmation' => 'new-password',
         ]);
 
-        $this->assertUserPasswordIs('123456', $user->fresh()->password);
+        $this->assertUserPasswordIs('123456', $user);
         $response->assertRedirect($this->getPasswordResetURL());
         $response->assertSessionHasErrors('email');
     }
@@ -68,8 +68,8 @@ trait CanChangePasswordTests
         $user_one = $this->createUserOrAdmin('user_one@gmail.com', '123456');
         $user_two = $this->createUserOrAdmin('user_two@gmail.com', 'abcxyz');
         $valid_token_of_user_one = $this->generatePasswordResetToken($user_one);
-        $this->assertUserPasswordIs('123456', $user_one->password);
-        $this->assertUserPasswordIs('abcxyz', $user_two->password);
+        $this->assertUserPasswordIs('123456', $user_one);
+        $this->assertUserPasswordIs('abcxyz', $user_two);
 
         $response = $this->postFrom($this->getPasswordResetURL(), [
             'token' => $valid_token_of_user_one,
@@ -78,8 +78,8 @@ trait CanChangePasswordTests
             'password_confirmation' => 'new-password',
         ]);
 
-        $this->assertUserPasswordIs('123456', $user_one->fresh()->password);
-        $this->assertUserPasswordIs('abcxyz', $user_two->fresh()->password);
+        $this->assertUserPasswordIs('123456', $user_one);
+        $this->assertUserPasswordIs('abcxyz', $user_two);
         $response->assertSessionHasErrors('email');
     }
 
@@ -87,7 +87,7 @@ trait CanChangePasswordTests
     public function user_cannot_change_password_using_expired_token()
     {
         $user = $this->createUserOrAdmin('john@example.com', '123456');
-        $this->assertUserPasswordIs('123456', $user->password);
+        $this->assertUserPasswordIs('123456', $user);
         $expired_token = $this->generateExpiredPasswordResetToken($user);
 
         $response = $this->post($this->getPasswordResetURL(), [
@@ -97,7 +97,7 @@ trait CanChangePasswordTests
             'password_confirmation' => 'new-password',
         ]);
 
-        $this->assertUserPasswordIs('123456', $user->fresh()->password);
+        $this->assertUserPasswordIs('123456', $user);
         $response->assertSessionHasErrors('email');
     }
 }
