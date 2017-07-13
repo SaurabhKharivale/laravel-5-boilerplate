@@ -53,7 +53,7 @@ trait CanRequestForPasswordResetTests
     {
         $this->createUserOrAdmin('john@example.com');
 
-        $response = $this->postFrom($this->getResetLinkUrl(), ['email' => 'john@example.com']);
+        $response = $this->from($this->getResetLinkUrl())->post($this->getResetLinkUrl(), ['email' => 'john@example.com']);
 
         $response->assertRedirect($this->getResetLinkUrl());
         $this->assertPasswordResetTokenExists('john@example.com');
@@ -83,7 +83,7 @@ trait CanRequestForPasswordResetTests
     /** @test */
     public function user_is_redirected_back_with_error_when_attepting_password_reset_on_non_existent_email()
     {
-        $response = $this->postFrom($this->getResetLinkUrl(), ['email' => 'user_non_existent@xyz.com']);
+        $response = $this->from($this->getResetLinkUrl())->post($this->getResetLinkUrl(), ['email' => 'user_non_existent@xyz.com']);
 
         $response->assertRedirect($this->getResetLinkUrl());
         $response->assertSessionHasErrors(['email']);

@@ -50,12 +50,13 @@ trait CanChangePasswordTests
         $user = $this->createUserOrAdmin('john@example.com', '123456');
         $this->assertUserPasswordIs('123456', $user);
 
-        $response = $this->postFrom($this->getPasswordResetURL(), [
-            'token' => 'invalid_token',
-            'email' => 'john@example.com',
-            'password' => 'new-password',
-            'password_confirmation' => 'new-password',
-        ]);
+        $response = $this->from($this->getPasswordResetURL())
+                        ->post($this->getPasswordResetURL(), [
+                            'token' => 'invalid_token',
+                            'email' => 'john@example.com',
+                            'password' => 'new-password',
+                            'password_confirmation' => 'new-password',
+                        ]);
 
         $this->assertUserPasswordIs('123456', $user);
         $response->assertRedirect($this->getPasswordResetURL());
@@ -71,12 +72,13 @@ trait CanChangePasswordTests
         $this->assertUserPasswordIs('123456', $user_one);
         $this->assertUserPasswordIs('abcxyz', $user_two);
 
-        $response = $this->postFrom($this->getPasswordResetURL(), [
-            'token' => $valid_token_of_user_one,
-            'email' => 'user_two@gmail.com',
-            'password' => 'new-password',
-            'password_confirmation' => 'new-password',
-        ]);
+        $response = $this->from($this->getPasswordResetURL())
+                        ->post($this->getPasswordResetURL(), [
+                            'token' => $valid_token_of_user_one,
+                            'email' => 'user_two@gmail.com',
+                            'password' => 'new-password',
+                            'password_confirmation' => 'new-password',
+                        ]);
 
         $this->assertUserPasswordIs('123456', $user_one);
         $this->assertUserPasswordIs('abcxyz', $user_two);

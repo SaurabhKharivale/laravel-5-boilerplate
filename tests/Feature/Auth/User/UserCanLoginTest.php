@@ -40,7 +40,7 @@ class UserCanLoginTest extends TestCase
         ];
         $this->assertNull(\Auth::user());
 
-        $response = $this->postFrom('login', $credentials);
+        $response = $this->from('/login')->post('/login', $credentials);
 
         $response->assertRedirect('/login');
         $this->assertNull(\Auth::user());
@@ -55,7 +55,7 @@ class UserCanLoginTest extends TestCase
         ];
         $this->assertNull(\Auth::user());
 
-        $response = $this->postFrom('login', $credentials);
+        $response = $this->from('/login')->post('/login', $credentials);
 
         $response->assertRedirect('/login');
         $this->assertNull(\Auth::user());

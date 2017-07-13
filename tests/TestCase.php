@@ -16,8 +16,10 @@ abstract class TestCase extends BaseTestCase
         $this->disableExceptionHandling();
     }
 
-    public function postFrom($uri, $data = [])
+    public function from($uri)
     {
-        return $this->call('POST', $uri, $data, [], [], ['HTTP_REFERER' => $uri]);
+        session()->setPreviousUrl(url($uri));
+
+        return $this;
     }
 }
