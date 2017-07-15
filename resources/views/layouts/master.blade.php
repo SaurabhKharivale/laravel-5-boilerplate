@@ -30,13 +30,29 @@
     </div>
 
     <!-- Scripts -->
+    <script type="text/javascript">
+        document.addEventListener('DOMContentLoaded', function () {
+            var navBurgers = Array.prototype.slice.call(document.querySelectorAll('.navbar-burger'), 0);
+
+            if (navBurgers.length > 0) {
+                navBurgers.forEach(function (burger) {
+                    burger.addEventListener('click', () => {
+                        var target = document.getElementById(burger.dataset.target);
+
+                        burger.classList.toggle('is-active');
+                        target.classList.toggle('is-active');
+                    });
+                });
+            }
+        });
+    </script>
     @yield('scripts')
     <script src="{{ mix('/js/manifest.js') }}"></script>
     <script src="{{ mix('/js/vendor.js') }}"></script>
-    <script src="{{ mix('js/core.js') }}"></script>
-    <script src="{{ mix('js/app.js') }}"></script>
+    <script src="{{ mix('/js/core.js') }}"></script>
+    <script src="{{ mix('/js/app.js') }}"></script>
     @if(auth()->guard('admin')->check())
-    <script src="{{ mix('js/admin.js') }}"></script>
+        <script src="{{ mix('/js/admin.js') }}"></script>
     @endif
 </body>
 </html>

@@ -1,28 +1,27 @@
-<nav class="nav has-shadow">
-    <div class="container">
-        <div class="nav-left">
-            <a class="nav-item">
-                <img src="http://bulma.io/images/bulma-logo.png" alt="Bulma logo">
-            </a>
-            <a class="nav-item is-tab is-hidden-mobile is-active">Home</a>
-            <a class="nav-item is-tab is-hidden-mobile">Features</a>
-            <a class="nav-item is-tab is-hidden-mobile">About</a>
+<nav class="navbar">
+    <div class="navbar-brand">
+        <a class="navbar-item" href="{{ url('/') }}">
+            <strong>L5 Boilerplate</strong>
+        </a>
+        <div class="navbar-burger" data-target="navMenu">
+            <span></span>
+            <span></span>
+            <span></span>
         </div>
-        <span class="nav-toggle">
-            <span></span>
-            <span></span>
-            <span></span>
-        </span>
-        <div class="nav-right nav-menu">
-            <a class="nav-item is-tab is-hidden-tablet is-active">Home</a>
-            <a class="nav-item is-tab is-hidden-tablet">Features</a>
-            <a class="nav-item is-tab is-hidden-tablet">About</a>
+    </div>
+    <div class="navbar-menu" id="navMenu">
+        <div class="navbar-start">
+            <a class="navbar-item">Home</a>
+            <a class="navbar-item">Features</a>
+            <a class="navbar-item">About</a>
+        </div>
+        <div class="navbar-end">
             @if(Auth::check())
-                <a href="{{ route('profile') }}" class="nav-item is-tab">
+                <a href="{{ route('profile') }}" class="navbar-item">
                     {{ Auth::user()->first_name }} <span class="caret"></span>
                 </a>
 
-                <a class="nav-item is-tab" href="{{ route('logout') }}"
+                <a class="navbar-item" href="{{ route('logout') }}"
                     onclick="event.preventDefault();
                     document.getElementById('logout-form').submit();">
                     Logout
@@ -32,11 +31,11 @@
                     {{ csrf_field() }}
                 </form>
             @elseif(Auth::guard('admin')->check())
-                <a href="#" class="nav-item is-tab">
+                <a href="#" class="navbar-item">
                     {{ Auth::guard('admin')->user()->first_name }} <span class="caret"></span>
                 </a>
 
-                <a class="nav-item is-tab" href="{{ route('admin.logout') }}"
+                <a class="navbar-item" href="{{ route('admin.logout') }}"
                     onclick="event.preventDefault();
                     document.getElementById('logout-form').submit();">
                     Logout
@@ -46,8 +45,8 @@
                     {{ csrf_field() }}
                 </form>
             @else
-                <a class="nav-item is-tab" href="{{ route('login') }}">Login</a>
-                <a class="nav-item is-tab" href="{{ route('register') }}">Register</a>
+                <a class="navbar-item" href="{{ route('login') }}">Login</a>
+                <a class="navbar-item" href="{{ route('register') }}">Register</a>
             @endif
         </div>
     </div>
