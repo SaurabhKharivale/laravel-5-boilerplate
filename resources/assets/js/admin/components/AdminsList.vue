@@ -29,20 +29,20 @@
         <p v-show="error">Unable to load admins data.</p>
 
         <modal :active="managing" @hide="managing = false">
-            <manage-role v-if="selectedAdmin" :admin="selectedAdmin"></manage-role>
+            <manage-admin-roles v-if="selectedAdmin" :admin="selectedAdmin"></manage-admin-roles>
         </modal>
     </div>
 </template>
 
 <script>
-import ManageRole from './ManageRole';
+import ManageAdminRoles from './ManageAdminRoles';
 
 export default {
     mounted() {
         this.getAll();
     },
     components: {
-        ManageRole,
+        ManageAdminRoles,
     },
     data() {
         return {

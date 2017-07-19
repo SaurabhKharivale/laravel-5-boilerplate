@@ -11,6 +11,10 @@
                 <admins-list></admins-list>
                 <create-admin></create-admin>
             </div>
+            <div class="column">
+                <manage-roles></manage-roles>
+                <create-role></create-role>
+            </div>
         </div>
         @endcan
     </div>

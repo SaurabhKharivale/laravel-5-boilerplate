@@ -6,7 +6,7 @@ use App\Role;
 use App\Admin;
 use Tests\TestCase;
 
-class CanFetchRolesTest extends TestCase
+class RetriveRolesTest extends TestCase
 {
     /** @test */
     public function can_fetch_all_roles()
@@ -26,5 +26,16 @@ class CanFetchRolesTest extends TestCase
                 ['name' => 'manager'],
             ]
         ]);
+    }
+
+    /** @test */
+    public function guest_user_cannot_view_roles()
+    {
+        $this->withExceptionHandling();
+
+        $response = $this->json('GET', '/api/role');
+
+        $response->assertStatus(401);
+        $response->assertSeeText('Unauthenticated');
     }
 }

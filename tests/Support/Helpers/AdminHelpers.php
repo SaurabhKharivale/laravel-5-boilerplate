@@ -8,18 +8,23 @@ use App\Permission;
 
 trait AdminHelpers
 {
-    public function createAdmin($data)
+    public function createAdmin($data = [])
     {
         $email = isset($data['email']) ? $data['email'] : null;
         $admin = $this->createAdminAccount($email);
 
         if(isset($data['role'])) {
-            $role = factory(Role::class)->create(['name' => $data['role']]);
+            $role = factory(Role::class)->create(['name' => $data['role'], 'label' => $data['role']]);
             $admin->assignRole($role);
+        }
 
-            if(isset($data['permission'])) {
-                $this->attachPermissionToRole($role, $data['permission']);
+        if(isset($data['permission'])) {
+            if(! isset($role)) {
+                $role = factory(Role::class)->create();
+                $admin->assignRole($role);
             }
+
+            $this->attachPermissionToRole($role, $data['permission']);
         }
 
         return $admin;

@@ -14,4 +14,25 @@ class RoleController extends Controller
             'roles' => Role::all(),
         ]);
     }
+
+    public function store()
+    {
+        $this->authorize('create', Role::class);
+
+        $this->validate(request(), [
+            'name' => 'required|min:3',
+            'label' => 'required|min:3',
+        ]);
+
+        Role::create([
+            'name' => request('name'),
+            'label' => request('label'),
+            'description' => request('description'),
+        ]);
+
+        return response()->json([
+            'message' => 'Role created.',
+            'type' => 'success',
+        ], 201);
+    }
 }
