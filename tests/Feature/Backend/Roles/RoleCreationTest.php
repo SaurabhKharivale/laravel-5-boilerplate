@@ -31,10 +31,6 @@ class RoleCreationTest extends TestCase
         $this->assertEquals('Manager', $role->label);
         $this->assertEquals('manager', $role->name);
         $this->assertEquals('A role for managers', $role->description);
-        $response->assertJson([
-            'message' => 'Role created.',
-            'type' => 'success',
-        ]);
     }
 
     /** @test */
@@ -55,9 +51,28 @@ class RoleCreationTest extends TestCase
         $this->assertEquals('Manager', $role->label);
         $this->assertEquals('manager', $role->name);
         $this->assertEquals('A role for managers', $role->description);
+    }
+
+    /** @test */
+    public function after_successful_role_creation_a_valid_response_is_generated()
+    {
+        $super_admin = $this->createAdmin(['role' => 'super-admin']);
+
+        $response = $this->actingAs($super_admin, 'admin-api')->json('POST', '/api/role', [
+            'label' => 'Manager',
+            'name' => 'manager',
+            'description' => 'A role for managers',
+        ]);
+
+        $response->assertStatus(201);
         $response->assertJson([
             'message' => 'Role created.',
             'type' => 'success',
+            'role' => [
+                'name' => 'manager',
+                'label' => 'Manager',
+                'description' => 'A role for managers',
+            ]
         ]);
     }
 

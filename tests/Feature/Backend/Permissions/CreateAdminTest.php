@@ -30,10 +30,6 @@ class CreateAdminTest extends TestCase
         $response->assertStatus(201);
         $this->assertCount(2, Admin::all());
         $this->assertAdminUserExists('jane@example.com');
-        $response->assertJson([
-            'message' => 'New admin user created.',
-            'type' => 'success',
-        ]);
     }
 
     /** @test */
@@ -51,9 +47,28 @@ class CreateAdminTest extends TestCase
         $response->assertStatus(201);
         $this->assertCount(2, Admin::all());
         $this->assertAdminUserExists('jane@example.com');
+    }
+
+    /** @test */
+    public function after_successful_admin_creation_valid_response_is_generated()
+    {
+        $super_admin = $this->createAdmin(['role' => 'super-admin']);
+
+        $response = $this->actingAs($super_admin, 'admin-api')->json('POST', '/api/admin', [
+            'first_name' => 'Jane',
+            'last_name' => 'Doe',
+            'email' => 'jane@example.com',
+        ]);
+
+        $response->assertStatus(201);
         $response->assertJson([
             'message' => 'New admin user created.',
             'type' => 'success',
+            'admin' => [
+                'first_name' => 'Jane',
+                'last_name' => 'Doe',
+                'email' => 'jane@example.com',
+            ],
         ]);
     }
 

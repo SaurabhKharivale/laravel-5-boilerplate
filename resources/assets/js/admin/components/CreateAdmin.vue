@@ -60,6 +60,7 @@ export default {
         submit() {
             this.form.submit('post', '/api/admin')
                 .then((response) => {
+                    this.$store.commit('addAdmin', response.admin);
                     this.creating = false;
                     flash(response.message, response.type);
                 })

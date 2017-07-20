@@ -38,26 +38,22 @@
 import ManageAdminRoles from './ManageAdminRoles';
 
 export default {
-    mounted() {
-        this.getAll();
-    },
     components: {
         ManageAdminRoles,
     },
     data() {
         return {
-            admins: [],
             error: false,
             managing: false,
             selectedAdmin: null,
         };
     },
+    computed: {
+        admins () {
+            return this.$store.state.dashboard.admins;
+        }
+    },
     methods: {
-        getAll() {
-            axios.get('/api/admin')
-                .then((response) => this.admins = response.data.admins)
-                .catch((error) => this.error = true);
-        },
         manage(admin) {
             this.selectedAdmin = admin;
             this.managing = true;

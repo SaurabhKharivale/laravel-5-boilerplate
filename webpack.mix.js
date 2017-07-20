@@ -14,7 +14,7 @@ const { mix } = require('laravel-mix');
 mix.js('resources/assets/js/app.js', 'public/js')
     .js('resources/assets/js/core.js', 'public/js')
     .js('resources/assets/js/admin.js', 'public/js')
-    .extract(['vue', 'axios', 'lodash'])
+    .extract(['vue', 'axios', 'lodash', 'vuex'])
     .sass('resources/assets/sass/app.scss', 'public/css')
     .browserSync();
 

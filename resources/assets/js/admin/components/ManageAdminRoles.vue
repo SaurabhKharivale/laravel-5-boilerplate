@@ -30,15 +30,13 @@ export default {
     props: ['admin'],
     data() {
         return {
-            roles: [],
             role: null,
         };
     },
-    mounted() {
-        axios.get('/api/role')
-            .then(response => this.roles = response.data.roles);
-    },
     computed: {
+        roles() {
+            return this.$store.state.dashboard.roles;
+        },
         name() {
             return this.admin.first_name + ' ' + this.admin.last_name;
         },
@@ -52,13 +50,13 @@ export default {
     methods: {
         assign() {
             axios.post(this.url, {'role_id': this.role})
-                .then(response => flash('New role assined to ' + this.name))
-                .catch(error => flash(error.message));
+                .then(response => flash('New role assined to ' + this.name, 'success'))
+                .catch(error => flash(error.message, 'danger'));
         },
         remove(role) {
             axios.delete(this.url, {params: {'role_id': role.id}})
                 .then(response => flash(response.data.message))
-                .catch(error => flash(error.message));
+                .catch(error => flash(error.message, 'danger'));
         }
     }
 }

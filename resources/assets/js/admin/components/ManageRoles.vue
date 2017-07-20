@@ -30,22 +30,18 @@
 
 <script>
 export default {
-    mounted() {
-        this.getRoles();
-    },
     data() {
         return {
             editing: false,
-            roles: [],
             selectedRole: null,
         };
     },
+    computed: {
+        roles() {
+            return this.$store.state.dashboard.roles;
+        }
+    },
     methods: {
-        getRoles() {
-            axios.get('/api/role')
-                .then(response => this.roles = response.data.roles)
-                .catch(error => flash(error.message, 'danger'));
-        },
         edit(role) {
             this.selectedRole = role;
             this.editing = true;

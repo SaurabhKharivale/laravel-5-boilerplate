@@ -27,7 +27,7 @@ class AdminController extends Controller
             'email' => 'required|unique:admins',
         ]);
 
-        Admin::create([
+        $admin = Admin::create([
             'first_name' => request('first_name'),
             'last_name' => request('last_name'),
             'email' => request('email'),
@@ -37,6 +37,7 @@ class AdminController extends Controller
         return response()->json([
             'message' => 'New admin user created.',
             'type' => 'success',
+            'admin' => $admin,
         ], 201);
     }
 }

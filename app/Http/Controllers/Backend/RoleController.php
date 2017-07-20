@@ -24,7 +24,7 @@ class RoleController extends Controller
             'label' => 'required|min:3',
         ]);
 
-        Role::create([
+        $role = Role::create([
             'name' => request('name'),
             'label' => request('label'),
             'description' => request('description'),
@@ -33,6 +33,7 @@ class RoleController extends Controller
         return response()->json([
             'message' => 'Role created.',
             'type' => 'success',
+            'role' => $role,
         ], 201);
     }
 }

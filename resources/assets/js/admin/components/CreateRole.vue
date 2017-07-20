@@ -50,7 +50,10 @@ export default {
     methods: {
         add() {
             this.form.submit('post', '/api/role')
-                .then(response => flash(response.message, response.type))
+                .then(response => {
+                    this.$store.commit('addRole', response.role);
+                    flash(response.message, response.type);
+                })
                 .catch(error => flash('Role creation failed.', 'danger'));
         }
     }
